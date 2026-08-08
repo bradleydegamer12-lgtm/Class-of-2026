@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>GRADE11 D - Sekano Ntoane</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#f2f7f4;--s:rgba(255,255,255,0.72);--b:rgba(200,216,208,0.6);
+--g1:#0a6b3a;--g2:#0d8c4e;--g3:#12b863;--g4:#34e88a;--g5:#7affab;
+--gd:#b8860b;--gd2:#d4a843;
+--dk:#0a1f14;--tx:#1a2e22;--tx2:#3d5a49;--tx3:#6b8f7a;
+--r:18px;--r2:24px;
+--fd:'DM Serif Display',serif;--fb:'DM Sans',sans-serif;--fm:'Space Mono',monospace;
+--shadow:0 8px 32px rgba(10,31,20,0.08);
+--shadow2:0 16px 48px rgba(10,31,20,0.12);
+--shadow3:0 24px 64px rgba(10,31,20,0.16);
+--glow:0 0 20px rgba(18,184,99,0.25);
+--bbh:60px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--fb);background:var(--bg);color:var(--tx)}
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.35;animation:orbF 25s ease-in-out infinite}
+.orb:nth-child(1){width:350px;height:350px;background:radial-gradient(circle,rgba(18,184,99,.25),transparent 70%);top:-80px;left:-80px}
+.orb:nth-child(2){width:280px;height:280px;background:radial-gradient(circle,rgba(10,107,58,.2),transparent 70%);bottom:-60px;right:-60px;animation-delay:-8s}
+.orb:nth-child(3){width:200px;height:200px;background:radial-gradient(circle,rgba(52,232,138,.12),transparent 70%);top:50%;left:50%;animation-delay:-15s}
+@keyframes orbF{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-40px) scale(1.06)}66%{transform:translate(-20px,30px) scale(.94)}}
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(10,107,58,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(10,107,58,.03) 1px,transparent 1px);background-size:50px 50px}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--b);border-radius:4px}
+.loader{position:fixed;inset:0;z-index:2000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
+.loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.loader-ring{width:52px;height:52px;border-radius:50%;border:3px solid var(--b);border-top-color:var(--g3);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-t{margin-top:18px;font-family:var(--fm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--tx3)}
+.auth{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:var(--bg);transition:opacity .6s,visibility .6s}
+.auth.hide{opacity:0;visibility:hidden;pointer-events:none}
+.auth-3d{position:absolute;inset:0;perspective:800px;overflow:hidden}
+.auth-cube{position:absolute;width:100px;height:100px;top:50%;left:50%;transform-style:preserve-3d;animation:cR 14s linear infinite;opacity:.3}
+@keyframes cR{0%{transform:translate(-50%,-50%) rotateX(0) rotateY(0)}100%{transform:translate(-50%,-50%) rotateX(360deg) rotateY(360deg)}}
+.cf{position:absolute;width:100px;height:100px;border:1.5px solid rgba(18,184,99,.12);background:rgba(18,184,99,.02)}
+.cf:nth-child(1){transform:translateZ(50px)}.cf:nth-child(2){transform:rotateY(90deg) translateZ(50px)}.cf:nth-child(3){transform:rotateY(180deg) translateZ(50px)}.cf:nth-child(4){transform:rotateY(270deg) translateZ(50px)}.cf:nth-child(5){transform:rotateX(90deg) translateZ(50px)}.cf:nth-child(6){transform:rotateX(-90deg) translateZ(50px)}
+.auth-parts{position:absolute;inset:0;pointer-events:none}
+.ap{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--g3);opacity:.35;animation:pF linear infinite}
+@keyframes pF{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.5}90%{opacity:.3}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+.auth-box{position:relative;z-index:2;width:380px;max-width:90vw;background:rgba(255,255,255,.72);backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);border:1px solid rgba(255,255,255,.5);border-radius:var(--r2);padding:36px 28px;box-shadow:var(--shadow3),inset 0 1px 0 rgba(255,255,255,.7);animation:aIn .7s cubic-bezier(.16,1,.3,1)}
+@keyframes aIn{0%{opacity:0;transform:scale(.9) rotateX(10deg) translateY(30px)}100%{opacity:1;transform:scale(1) rotateX(0) translateY(0)}}
+.auth-shine{position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 42%,rgba(255,255,255,.08) 50%,transparent 58%);animation:sh 5s ease-in-out infinite;pointer-events:none}
+@keyframes sh{0%,100%{transform:translateX(-80%)}50%{transform:translateX(80%)}}
+.a-logo{font-family:var(--fd);font-size:34px;font-weight:700;background:linear-gradient(135deg,var(--g1),var(--g3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:2px}
+.a-logo .d{-webkit-text-fill-color:var(--gd2)}
+.a-sub{font-size:11px;color:var(--tx3);margin-bottom:6px;line-height:1.5}
+.a-school{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--g2);margin-bottom:24px;padding:6px 12px;background:rgba(18,184,99,.06);border:1px solid rgba(18,184,99,.15);border-radius:8px;display:inline-block}
+.a-err{display:none;padding:10px 14px;background:rgba(220,50,50,.06);border:1px solid rgba(220,50,50,.15);border-radius:10px;font-size:11px;color:#b33;margin-bottom:12px}
+.a-err.show{display:block}
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.fl{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3)}
+.fi{background:rgba(255,255,255,.5);border:1.5px solid var(--b);border-radius:12px;padding:13px 16px;font-family:var(--fb);font-size:14px;color:var(--tx);outline:0;transition:border-color .3s,box-shadow .3s,transform .2s}
+.fi:focus{border-color:var(--g3);box-shadow:0 0 0 4px rgba(18,184,99,.1),var(--glow);transform:translateY(-1px)}
+.fi::placeholder{color:var(--tx3)}
+.a-btn{margin-top:4px;width:100%;padding:15px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:0;border-radius:12px;cursor:pointer;transition:transform .2s,box-shadow .3s;box-shadow:0 4px 16px rgba(10,107,58,.3)}
+.a-btn:active{transform:scale(.97)}
+.app{display:none;height:100vh;flex-direction:column;position:relative;z-index:1;overflow:hidden}
+.app.show{display:flex}
+.topnav{height:56px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.82);backdrop-filter:blur(24px) saturate(2);-webkit-backdrop-filter:blur(24px) saturate(2);border-bottom:0.5px solid var(--b);flex-shrink:0;z-index:100;transform:translateY(0);opacity:1;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .3s ease}
+.topnav.nav-hide{transform:translateY(-100%);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .25s ease}
+.topnav-t{font-family:var(--fd);font-size:24px;font-weight:700;background:linear-gradient(135deg,var(--g1),var(--g3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.topnav-t .d{-webkit-text-fill-color:var(--gd2)}
+.topnav-r{display:flex;align-items:center;gap:10px}
+.topnav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:10px;font-weight:700;color:#fff}
+.bnav{height:var(--bbh);padding:0 4px;display:flex;align-items:center;background:rgba(255,255,255,.88);backdrop-filter:blur(24px) saturate(2);-webkit-backdrop-filter:blur(24px) saturate(2);border-top:0.5px solid var(--b);flex-shrink:0;z-index:100;transform:translateY(0);opacity:1;will-change:transform,opacity;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .35s ease}
+.bnav.nav-hide{transform:translateY(100%);opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .3s ease}
+.bnav-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 4px;cursor:pointer;border:0;background:0;transition:transform .2s;position:relative}
+.bnav-i:active{transform:scale(.85)}
+.bnav-ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.bnav-ic svg{width:20px;height:20px;stroke:var(--tx3);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s}
+.bnav-lb{font-family:var(--fm);font-size:7px;letter-spacing:.04em;text-transform:uppercase;color:var(--tx3);transition:all .3s;line-height:1}
+.bnav-i.on .bnav-lb{color:var(--g1);font-weight:700}
+.bnav-i.on .bnav-ic{background:rgba(18,184,99,.1);box-shadow:0 0 10px rgba(18,184,99,.12)}
+.bnav-i.on .bnav-ic svg{stroke:var(--g1)}
+.bnav-ind{position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:2.5px;background:linear-gradient(90deg,var(--g2),var(--g4));border-radius:2px;transition:width .3s cubic-bezier(.16,1,.3,1)}
+.bnav-i.on .bnav-ind{width:20px}
+.pages{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.page{display:none;min-height:100%;padding:20px;padding-bottom:30px}
+.page.on{display:block;animation:pgIn .4s cubic-bezier(.16,1,.3,1)}
+@keyframes pgIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.sec-t{font-family:var(--fd);font-size:26px;font-weight:700;color:var(--dk);margin-bottom:4px}
+.sec-s{font-family:var(--fm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--g2);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.sec-s::before{content:'';width:16px;height:2px;background:var(--g3)}
+.gc{background:rgba(255,255,255,.72);backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);border:0.5px solid rgba(255,255,255,.5);border-radius:var(--r);padding:20px;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.5);margin-bottom:14px;transition:transform .25s;overflow:hidden}
+.gc:active{transform:scale(.98)}
+.icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.icon-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;opacity:0;animation:itemPop .5s cubic-bezier(.16,1,.3,1) forwards}
+.icon-item:nth-child(1){animation-delay:.05s}.icon-item:nth-child(2){animation-delay:.1s}.icon-item:nth-child(3){animation-delay:.15s}.icon-item:nth-child(4){animation-delay:.2s}.icon-item:nth-child(5){animation-delay:.25s}.icon-item:nth-child(6){animation-delay:.3s}.icon-item:nth-child(7){animation-delay:.35s}.icon-item:nth-child(8){animation-delay:.4s}.icon-item:nth-child(9){animation-delay:.45s}.icon-item:nth-child(10){animation-delay:.5s}.icon-item:nth-child(11){animation-delay:.55s}.icon-item:nth-child(12){animation-delay:.6s}.icon-item:nth-child(13){animation-delay:.65s}
+@keyframes itemPop{0%{opacity:0;transform:scale(.8) translateY(10px)}60%{transform:scale(1.05) translateY(-2px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.icon-item:active{transform:scale(.88)}
+.icon-box{width:56px;height:56px;border-radius:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .25s,box-shadow .25s;background:rgba(255,255,255,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.icon-box svg{width:24px;height:24px;stroke:var(--tx2);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.icon-lb{font-family:var(--fb);font-size:10px;font-weight:500;color:var(--tx2);text-align:center;line-height:1.2}
+.welc{background:linear-gradient(135deg,var(--g1),var(--g2));border-radius:var(--r2);padding:28px;color:#fff;position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(10,107,58,.25);margin-bottom:24px;animation:welcIn .6s cubic-bezier(.16,1,.3,1)}
+@keyframes welcIn{0%{opacity:0;transform:translateY(20px) scale(.95)}60%{transform:translateY(-3px) scale(1.01)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.welc::before{content:'';position:absolute;top:-30%;right:-20%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.welc-h{font-family:var(--fd);font-size:28px;font-weight:700;margin-bottom:6px;position:relative;z-index:1}
+.welc-p{font-size:13px;opacity:.85;position:relative;z-index:1;line-height:1.5}
+.welc-badge{display:inline-block;margin-top:10px;padding:5px 14px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:50px;font-family:var(--fm);font-size:9px;letter-spacing:.06em;position:relative;z-index:1}
+.now{background:rgba(255,255,255,.72);backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);border:0.5px solid rgba(255,255,255,.5);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);display:flex;align-items:center;gap:16px;margin-bottom:20px;position:relative;overflow:hidden}
+.now::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--g3),var(--g5))}
+.now-ic{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(18,184,99,.06)}
+.now-ic svg{width:22px;height:22px;stroke:var(--g2);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.now-inf{flex:1}.now-sub{font-weight:600;font-size:14px;color:var(--dk);margin-bottom:2px}.now-det{font-family:var(--fm);font-size:10px;color:var(--tx3)}
+.ann{background:rgba(255,255,255,.72);backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);border:0.5px solid rgba(255,255,255,.5);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);margin-bottom:10px;border-left:3px solid var(--g3);transition:transform .2s}
+.ann:active{transform:scale(.98)}
+.ann-h{font-weight:600;font-size:13px;color:var(--dk);margin-bottom:4px}.ann-p{font-size:12px;color:var(--tx2);line-height:1.5}.ann-d{font-family:var(--fm);font-size:9px;color:var(--tx3);margin-top:6px}
+.tt-tabs{display:flex;gap:4px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.tt-tab{padding:8px 14px;background:rgba(255,255,255,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:0.5px solid var(--b);border-radius:50px;font-family:var(--fm);font-size:9px;letter-spacing:.06em;color:var(--tx3);cursor:pointer;white-space:nowrap;transition:all .3s;flex-shrink:0}
+.tt-tab:active{transform:scale(.92)}
+.tt-tab.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(10,107,58,.25)}
+.tt-row{display:flex;align-items:stretch;gap:12px;margin-bottom:10px;animation:ttSlide .4s cubic-bezier(.16,1,.3,1) backwards}
+.tt-row:nth-child(1){animation-delay:.03s}.tt-row:nth-child(2){animation-delay:.06s}.tt-row:nth-child(3){animation-delay:.09s}.tt-row:nth-child(4){animation-delay:.12s}.tt-row:nth-child(5){animation-delay:.15s}.tt-row:nth-child(6){animation-delay:.18s}.tt-row:nth-child(7){animation-delay:.21s}.tt-row:nth-child(8){animation-delay:.24s}
+@keyframes ttSlide{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.tt-time{width:58px;flex-shrink:0;text-align:right;padding:12px 0;font-family:var(--fm);font-size:9px;color:var(--tx3);line-height:1.4}
+.tt-card{flex:1;background:rgba(255,255,255,.72);backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);border:0.5px solid rgba(255,255,255,.5);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;transition:transform .2s}
+.tt-card:active{transform:scale(.97)}
+.tt-card.lunch{background:rgba(212,168,67,.06);border-color:rgba(212,168,67,.15)}
+.tt-card.free{background:rgba(18,184,99,.04);border-color:rgba(18,184,99,.1);border-style:dashed}
+.tt-ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(18,184,99,.06)}
+.tt-ic svg{width:18px;height:18px;stroke:var(--g2);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.tt-inf{flex:1}.tt-sub{font-weight:600;font-size:13px;color:var(--dk);margin-bottom:1px}.tt-det{font-family:var(--fm);font-size:9px;color:var(--tx3)}
+.sd-head{display:flex;align-items:center;gap:18px;margin-bottom:24px}
+.sd-ic{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:rgba(18,184,99,.06);box-shadow:0 6px 20px rgba(0,0,0,.06)}
+.sd-ic svg{width:30px;height:30px;stroke:var(--g2);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sd-nm{font-family:var(--fd);font-size:26px;font-weight:700;color:var(--dk)}.sd-tch{font-family:var(--fm);font-size:10px;color:var(--tx3);margin-top:2px}
+.sd-back{font-family:var(--fm);font-size:10px;color:var(--g2);cursor:pointer;padding:8px 16px;background:rgba(18,184,99,.06);border:1px solid rgba(18,184,99,.15);border-radius:50px;margin-bottom:20px;display:inline-block;transition:all .2s}
+.sd-back:active{transform:scale(.92)}
+.topic-card{background:rgba(255,255,255,.72);backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8);border:0.5px solid rgba(255,255,255,.5);border-radius:14px;padding:16px;box-shadow:var(--shadow);margin-bottom:10px;cursor:pointer;transition:transform .2s;opacity:0;animation:topicIn .4s cubic-bezier(.16,1,.3,1) forwards}
+.topic-card:nth-child(2){animation-delay:.05s}.topic-card:nth-child(3){animation-delay:.1s}.topic-card:nth-child(4){animation-delay:.15s}.topic-card:nth-child(5){animation-delay:.2s}.topic-card:nth-child(6){animation-delay:.25s}
+@keyframes topicIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.topic-card:active{transform:scale(.97)}
+.topic-nm{font-weight:600;font-size:14px;color:var(--dk);margin-bottom:4px}.topic-ds{font-size:12px;color:var(--tx2);line-height:1.5}
+.study-tabs{display:flex;gap:4px;margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.study-tab{flex:1;min-width:0;padding:10px 6px;border-radius:12px;font-family:var(--fm);font-size:8px;letter-spacing:.04em;text-transform:uppercase;text-align:center;cursor:pointer;transition:all .3s;border:1px solid var(--b);background:rgba(255,255,255,.5);color:var(--tx3);white-space:nowrap}
+.study-tab:active{transform:scale(.93)}
+.study-tab.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(10,107,58,.2)}
+.timer-ring{width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:3px solid var(--b);display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 20px;position:relative;box-shadow:var(--shadow2)}
+.timer-ring::before{content:'';position:absolute;inset:-3px;border-radius:50%;border:3px solid transparent;border-top-color:var(--g3);animation:spin 4s linear infinite;opacity:.4}
+.timer-time{font-family:var(--fm);font-size:42px;font-weight:700;color:var(--dk)}.timer-label{font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);margin-top:4px}
+.timer-btns{display:flex;gap:10px;justify-content:center;margin-bottom:28px}
+.timer-btn{padding:12px 28px;border-radius:50px;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;border:0}
+.timer-btn:active{transform:scale(.93)}
+.timer-btn.primary{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;box-shadow:0 4px 16px rgba(10,107,58,.3)}
+.timer-btn.secondary{background:rgba(255,255,255,.72);color:var(--tx3);border:1px solid var(--b)}
+.flashcard{background:rgba(255,255,255,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(255,255,255,.5);border-radius:18px;padding:28px;box-shadow:var(--shadow);min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:transform .3s;margin-bottom:16px;position:relative;overflow:hidden}
+.flashcard:active{transform:scale(.96)}
+.flashcard-q{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--dk);margin-bottom:8px}
+.flashcard-a{font-size:14px;color:var(--tx2);line-height:1.5;display:none;margin-top:8px}
+.flashcard.revealed .flashcard-q{color:var(--g2)}.flashcard.revealed .flashcard-a{display:block}
+.flashcard-hint{font-family:var(--fm);font-size:9px;color:var(--tx3);letter-spacing:.06em;position:absolute;bottom:12px}
+.flashcard.revealed .flashcard-hint{display:none}
+.flash-nav{display:flex;gap:10px;justify-content:center;margin-bottom:20px}
+.flash-nav button{padding:10px 20px;border-radius:50px;font-family:var(--fm);font-size:10px;cursor:pointer;transition:all .2s;border:1px solid var(--b);background:rgba(255,255,255,.72);color:var(--tx2)}
+.flash-nav button:active{transform:scale(.93)}
+.flash-counter{text-align:center;font-family:var(--fm);font-size:10px;color:var(--tx3);margin-bottom:12px}
+.paper-card{background:rgba(255,255,255,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(255,255,255,.5);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);margin-bottom:10px;display:flex;align-items:center;gap:14px;transition:transform .2s;cursor:pointer;opacity:0;animation:paperSlide .4s cubic-bezier(.16,1,.3,1) forwards}
+.paper-card:nth-child(1){animation-delay:.03s}.paper-card:nth-child(2){animation-delay:.06s}.paper-card:nth-child(3){animation-delay:.09s}.paper-card:nth-child(4){animation-delay:.12s}
+@keyframes paperSlide{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
+.paper-card:active{transform:scale(.97)}
+.paper-ic{width:40px;height:40px;border-radius:12px;background:rgba(18,184,99,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.paper-ic svg{width:20px;height:20px;stroke:var(--g2);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.paper-inf{flex:1}.paper-nm{font-weight:600;font-size:13px;color:var(--dk);margin-bottom:1px}.paper-src{font-family:var(--fm);font-size:9px;color:var(--tx3)}
+.paper-yr{font-family:var(--fm);font-size:9px;color:var(--g2);background:rgba(18,184,99,.06);padding:3px 10px;border-radius:50px;flex-shrink:0}
+.tut-card{background:rgba(255,255,255,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(255,255,255,.5);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);margin-bottom:12px;transition:transform .2s;cursor:pointer;opacity:0;animation:tutPop .5s cubic-bezier(.16,1,.3,1) forwards}
+.tut-card:nth-child(1){animation-delay:.05s}.tut-card:nth-child(2){animation-delay:.1s}.tut-card:nth-child(3){animation-delay:.15s}
+@keyframes tutPop{0%{opacity:0;transform:scale(.93) translateY(10px)}60%{transform:scale(1.02) translateY(-2px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.tut-card:active{transform:scale(.97)}
+.tut-top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.tut-av{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tut-av svg{width:20px;height:20px;stroke:#fff;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.tut-name{font-weight:600;font-size:14px;color:var(--dk)}.tut-plat{font-family:var(--fm);font-size:9px;color:var(--tx3)}
+.tut-desc{font-size:12px;color:var(--tx2);line-height:1.5}
+.tut-subj-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.tut-tag{padding:3px 10px;background:rgba(18,184,99,.06);border:1px solid rgba(18,184,99,.1);border-radius:50px;font-family:var(--fm);font-size:8px;color:var(--g2)}
+.res-subj-sel{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.res-subj-btn{padding:6px 12px;border-radius:50px;font-family:var(--fm);font-size:8px;letter-spacing:.04em;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .3s;border:1px solid var(--b);background:rgba(255,255,255,.5);color:var(--tx3)}
+.res-subj-btn:active{transform:scale(.93)}
+.res-subj-btn.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-color:transparent}
+.quiz-card{background:rgba(255,255,255,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(255,255,255,.5);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);margin-bottom:16px}
+.quiz-q{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--dk);margin-bottom:16px;line-height:1.4}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{padding:14px 16px;background:var(--bg);border:1.5px solid var(--b);border-radius:12px;font-size:13px;color:var(--tx2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+.quiz-opt:active{transform:scale(.97)}
+.quiz-opt.correct{border-color:var(--g3);background:rgba(18,184,99,.08);color:var(--g1)}
+.quiz-opt.wrong{border-color:#d94848;background:rgba(217,72,72,.06);color:#b33}
+.quiz-opt.disabled{pointer-events:none;opacity:.7}
+.quiz-opt .opt-letter{width:24px;height:24px;border-radius:50%;background:rgba(18,184,99,.08);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:10px;font-weight:700;color:var(--g2);flex-shrink:0}
+.quiz-opt.correct .opt-letter{background:var(--g3);color:#fff}.quiz-opt.wrong .opt-letter{background:#d94848;color:#fff}
+.quiz-next{margin-top:16px;width:100%;padding:14px;border-radius:12px;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:0;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;box-shadow:0 4px 16px rgba(10,107,58,.2);transition:transform .2s}
+.quiz-next:active{transform:scale(.97)}
+.quiz-score{background:linear-gradient(135deg,var(--g1),var(--g2));border-radius:var(--r2);padding:32px;text-align:center;color:#fff;box-shadow:0 12px 40px rgba(10,107,58,.25)}
+.quiz-score-v{font-family:var(--fd);font-size:48px;font-weight:700;margin-bottom:4px}.quiz-score-l{font-family:var(--fm);font-size:10px;letter-spacing:.08em;opacity:.8}
+.quiz-subj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.quiz-subj-item{background:rgba(255,255,255,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(255,255,255,.5);border-radius:14px;padding:20px;box-shadow:var(--shadow);cursor:pointer;text-align:center;transition:transform .2s;opacity:0;animation:itemPop .5s cubic-bezier(.16,1,.3,1) forwards}
+.quiz-subj-item:nth-child(1){animation-delay:.05s}.quiz-subj-item:nth-child(2){animation-delay:.1s}.quiz-subj-item:nth-child(3){animation-delay:.15s}.quiz-subj-item:nth-child(4){animation-delay:.2s}
+.quiz-subj-item:active{transform:scale(.94)}
+.quiz-subj-item svg{width:28px;height:28px;stroke:var(--g2);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.quiz-subj-item .qs-nm{font-weight:600;font-size:12px;color:var(--dk);margin-top:8px}.quiz-subj-item .qs-cnt{font-family:var(--fm);font-size:9px;color:var(--tx3)}
+.creator{display:flex;align-items:center;gap:18px;background:rgba(255,255,255,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(255,255,255,.5);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);margin-bottom:14px;transition:transform .2s}
+.creator:active{transform:scale(.98)}
+.cr-av{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.cr-av svg{width:26px;height:26px;stroke:#fff;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.cr-nm{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--dk);margin-bottom:2px}.cr-role{font-family:var(--fm);font-size:10px;letter-spacing:.04em;color:var(--g2)}.cr-desc{font-size:12px;color:var(--tx2);margin-top:6px;line-height:1.5}
+.pf-card{background:linear-gradient(135deg,var(--g1),var(--g2));border-radius:var(--r2);padding:32px;color:#fff;text-align:center;margin-bottom:24px;box-shadow:0 12px 40px rgba(10,107,58,.25);position:relative;overflow:hidden}
+.pf-card::before{content:'';position:absolute;top:-40%;right:-20%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.06)}
+.pf-av{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:28px;margin:0 auto 14px;border:2px solid rgba(255,255,255,.3)}
+.pf-nm{font-family:var(--fd);font-size:26px;font-weight:700;margin-bottom:4px}.pf-dt{font-family:var(--fm);font-size:10px;letter-spacing:.06em;opacity:.75}
+.pf-row{display:flex;gap:12px;margin-bottom:12px}
+.pf-stat{flex:1;background:rgba(255,255,255,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(255,255,255,.5);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--shadow);transition:transform .2s}
+.pf-stat:active{transform:scale(.95)}
+.pf-sv{font-family:var(--fd);font-size:22px;font-weight:700;color:var(--g1)}.pf-sl{font-family:var(--fm);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3);margin-top:2px}
+.logout-btn{width:100%;padding:14px;background:rgba(220,50,50,.06);border:1px solid rgba(220,50,50,.15);border-radius:12px;font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#c0392b;cursor:pointer;transition:all .2s;margin-top:20px}
+.logout-btn:active{transform:scale(.97)}
+.ai-fab{position:fixed;bottom:calc(var(--bbh) + 16px);right:18px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g3));border:0;cursor:pointer;box-shadow:0 6px 28px rgba(10,107,58,.4);z-index:200;display:flex;align-items:center;justify-content:center;will-change:transform,opacity;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .35s ease}
+.ai-fab svg{width:24px;height:24px;stroke:#fff;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ai-fab:active{transform:scale(.88)!important}
+.ai-fab.fab-hide{transform:scale(0) translateY(80px);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .25s ease}
+@keyframes fabGlow{0%,100%{box-shadow:0 6px 28px rgba(10,107,58,.4)}50%{box-shadow:0 6px 36px rgba(10,107,58,.55),0 0 20px rgba(18,184,99,.3)}}
+.ai-fab:not(.fab-hide){animation:fabGlow 3s ease-in-out infinite}
+.ai-panel{position:fixed;bottom:0;left:0;right:0;z-index:300;max-height:75vh;background:rgba(255,255,255,.94);backdrop-filter:blur(30px) saturate(2);-webkit-backdrop-filter:blur(30px) saturate(2);border-radius:var(--r2) var(--r2) 0 0;box-shadow:0 -8px 40px rgba(10,31,20,.15);display:none;flex-direction:column;animation:aiSlide .4s cubic-bezier(.16,1,.3,1)}
+.ai-panel.open{display:flex}
+@keyframes aiSlide{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.ai-head{padding:16px 20px;border-bottom:0.5px solid var(--b);display:flex;align-items:center;justify-content:space-between}
+.ai-head-l{display:flex;align-items:center;gap:12px}
+.ai-head-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g3));display:flex;align-items:center;justify-content:center}
+.ai-head-av svg{width:18px;height:18px;stroke:#fff;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ai-head-t{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--dk)}.ai-head-s{font-family:var(--fm);font-size:9px;color:var(--g2)}
+.ai-close{width:30px;height:30px;border-radius:50%;background:var(--bg);border:0.5px solid var(--b);color:var(--tx3);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.ai-close:active{transform:scale(.85)}
+.ai-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;max-height:50vh}
+.ai-msg{max-width:85%;padding:12px 16px;border-radius:16px;font-size:13px;line-height:1.5;animation:msgIn .3s cubic-bezier(.16,1,.3,1)}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.ai-msg.bot{background:rgba(18,184,99,.08);border:1px solid rgba(18,184,99,.12);color:var(--tx);align-self:flex-start;border-bottom-left-radius:4px}
+.ai-msg.user{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.ai-msg .tdots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--g3);margin:0 2px;animation:dotB 1.4s infinite}
+.ai-msg .tdots span:nth-child(2){animation-delay:.2s}.ai-msg .tdots span:nth-child(3){animation-delay:.4s}
+@keyframes dotB{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.ai-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 10px}
+.ai-sug{padding:6px 14px;background:rgba(18,184,99,.06);border:1px solid rgba(18,184,99,.15);border-radius:50px;font-family:var(--fm);font-size:10px;color:var(--g2);cursor:pointer;transition:all .2s}
+.ai-sug:active{transform:scale(.92)}
+.ai-input-row{display:flex;gap:10px;padding:12px 20px 16px;border-top:0.5px solid var(--b)}
+.ai-input{flex:1;padding:12px 16px;background:var(--bg);border:1.5px solid var(--b);border-radius:50px;font-family:var(--fb);font-size:13px;color:var(--tx);outline:0;transition:border-color .3s}
+.ai-input:focus{border-color:var(--g3)}.ai-input::placeholder{color:var(--tx3)}
+.ai-send{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--g1),var(--g2));border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s;box-shadow:0 2px 8px rgba(10,107,58,.25)}
+.ai-send svg{width:18px;height:18px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ai-send:active{transform:scale(.88)}
+.modal-bg{position:fixed;inset:0;z-index:400;background:rgba(10,31,20,.5);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal-sh{background:rgba(255,255,255,.94);backdrop-filter:blur(30px) saturate(2);-webkit-backdrop-filter:blur(30px) saturate(2);border-radius:var(--r2) var(--r2) 0 0;width:100%;max-width:500px;max-height:85vh;overflow-y:auto;padding:28px;box-shadow:var(--shadow3);animation:mUp .4s cubic-bezier(.16,1,.3,1);position:relative}
+@keyframes mUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:4px;border-radius:4px;background:var(--b);margin:0 auto 20px}
+.modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:var(--bg);border:0.5px solid var(--b);color:var(--tx3);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.modal-close:active{transform:scale(.85) rotate(90deg)}
+</style>
+</head>
+<body>
+<div class="bg-orbs"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+<div class="bg-grid"></div>
+<div class="loader" id="loader"><div class="loader-ring"></div><div class="loader-t">GRADE11 D</div></div>
+
+<div class="auth" id="auth">
+<div class="auth-3d"><div class="auth-cube"><div class="cf"></div><div class="cf"></div><div class="cf"></div><div class="cf"></div><div class="cf"></div><div class="cf"></div></div><div class="auth-parts" id="aParts"></div></div>
+<div class="auth-box"><div class="auth-shine"></div>
+<div class="a-logo">GRADE11 <span class="d">D</span></div><div class="a-school">Sekano Ntoane Secondary School</div>
+<div class="a-sub">Welcome to the Grade 11D class app.</div>
+<div class="a-err" id="aErr"></div>
+<div class="fg"><label class="fl">Your Name</label><input class="fi" type="text" id="aName" placeholder="e.g. Bradley Mofokeng" required></div>
+<div class="fg"><label class="fl">Class Code</label><input class="fi" type="text" id="aCode" placeholder="Enter class code" required></div>
+<button class="a-btn" onclick="doAuth()">Enter App</button>
+</div></div>
+
+<div class="app" id="app">
+<div class="topnav" id="topnav"><div class="topnav-t">GRADE11 <span class="d">D</span></div><div class="topnav-r"><div class="topnav-av" id="navAv">?</div></div></div>
+<div class="pages" id="pages">
+<div class="page on" id="pgHome">
+<div class="welc"><div class="welc-h" id="welcH">Hey!</div><div class="welc-p">Here is what is happening today at Sekano Ntoane.</div><div class="welc-badge">Sekano Ntoane - Grade 11D</div></div>
+<div id="nowCard"></div>
+<div class="sec-s">Quick Access</div><div class="icon-grid" id="quickGrid"></div>
+<div class="sec-s">Announcements</div>
+<div class="ann"><div class="ann-h">Welcome to GRADE11 D!</div><div class="ann-p">Schedule, subjects, past papers, tutorials, quizzes, flashcards, AI assistant.</div><div class="ann-d">By Bradley Mofokeng and MiMo</div></div>
+<div class="ann"><div class="ann-h">Home Languages</div><div class="ann-p">IsiZulu, TshiVenda, Sesotho, and Xitsonga are separate subjects. Find yours under Subjects.</div><div class="ann-d">GRADE11 D Team</div></div>
+</div>
+<div class="page" id="pgSched"><div class="sec-t">Timetable</div><div class="sec-s">Weekly Schedule</div><div class="tt-tabs" id="ttTabs"></div><div id="ttBody"></div></div>
+<div class="page" id="pgSubj"><div class="sec-t">Subjects</div><div class="sec-s">Tap a subject to study</div><div id="subjContent"></div></div>
+<div class="page" id="pgStudy"><div class="sec-t">Study Cave</div><div class="sec-s">Focus. Learn. Prepare.</div>
+<div class="study-tabs"><div class="study-tab on" onclick="showStudyTab('timer',this)">Timer</div><div class="study-tab" onclick="showStudyTab('flash',this)">Cards</div><div class="study-tab" onclick="showStudyTab('papers',this)">Past Papers</div><div class="study-tab" onclick="showStudyTab('tutorials',this)">Tutorials</div></div>
+<div id="studyContent"></div></div>
+<div class="page" id="pgQuiz"><div class="sec-t">Questions Hub</div><div class="sec-s">Test your knowledge</div><div id="quizContent"></div></div>
+</div>
+<div class="bnav" id="bnav">
+<button class="bnav-i on" data-p="pgHome" onclick="nav('pgHome',this)"><div class="bnav-ind"></div><div class="bnav-ic"><svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg></div><div class="bnav-lb">Home</div></button>
+<button class="bnav-i" data-p="pgSched" onclick="nav('pgSched',this)"><div class="bnav-ind"></div><div class="bnav-ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div class="bnav-lb">Schedule</div></button>
+<button class="bnav-i" data-p="pgSubj" onclick="nav('pgSubj',this)"><div class="bnav-ind"></div><div class="bnav-ic"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div><div class="bnav-lb">Subjects</div></button>
+<button class="bnav-i" data-p="pgStudy" onclick="nav('pgStudy',this)"><div class="bnav-ind"></div><div class="bnav-ic"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><div class="bnav-lb">Study</div></button>
+<button class="bnav-i" data-p="pgQuiz" onclick="nav('pgQuiz',this)"><div class="bnav-ind"></div><div class="bnav-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9 9h.01M15 9h.01M8 13a4 4 0 008 0"/></svg></div><div class="bnav-lb">Quiz</div></button>
+</div>
+</div>
+
+<button class="ai-fab" id="aiFab" onclick="toggleAI()"><svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 014 4v1h2a2 2 0 012 2v2a4 4 0 01-2 3.5V16a2 2 0 01-2 2h-1v1a2 2 0 01-2 2h-2a2 2 0 01-2-2v-1H9a2 2 0 01-2-2v-1.5A4 4 0 015 11V9a2 2 0 012-2h1V6a4 4 0 014-4z"/><circle cx="9" cy="10" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="10" r="1" fill="#fff" stroke="none"/></svg></button>
+<div class="ai-panel" id="aiPanel">
+<div class="ai-head"><div class="ai-head-l"><div class="ai-head-av"><svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 014 4v1h2a2 2 0 012 2v2a4 4 0 01-2 3.5V16a2 2 0 01-2 2h-1v1a2 2 0 01-2 2h-2a2 2 0 01-2-2v-1H9a2 2 0 01-2-2v-1.5A4 4 0 015 11V9a2 2 0 012-2h1V6a4 4 0 014-4z"/></svg></div><div><div class="ai-head-t">Study AI</div><div class="ai-head-s">Ask about subjects, schedule, or study tips</div></div></div><button class="ai-close" onclick="toggleAI()">&times;</button></div>
+<div class="ai-messages" id="aiMsgs"><div class="ai-msg bot">Hey! I am your Grade 11D study assistant. Ask about subjects, schedule, past papers, tutorials, or study tips!</div></div>
+<div class="ai-suggestions"><div class="ai-sug" onclick="aiQuick('Where can I find past papers?')">Past papers</div><div class="ai-sug" onclick="aiQuick('What YouTube channels help?')">Tutorials</div><div class="ai-sug" onclick="aiQuick('Give me study tips')">Study tips</div><div class="ai-sug" onclick="aiQuick('Help me with Economics')">ECO help</div></div>
+<div class="ai-input-row"><input class="ai-input" id="aiInput" type="text" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter')aiSend()"><button class="ai-send" onclick="aiSend()"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></button></div>
+</div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal-sh"><div class="modal-handle"></div><button class="modal-close" onclick="closeModal()">&times;</button><div id="modalContent"></div></div></div>
+
+<script>
+var IC={
+reg:'<svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>',
+eng:'<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>',
+eco:'<svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+hist:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+bs:'<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>',
+mlit:'<svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>',
+hl:'<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>',
+lo:'<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+lunch:'<svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>',
+free:'<svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>',
+paper:'<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>',
+play:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>'
+};
+
+var SCHEDULE={
+Monday:[{t:'7:45-7:55',s:'Register',r:'',tc:'Thabethe',ic:'reg',sub:''},{t:'8:00-9:00',s:'ENG',r:'Hall B',tc:'Motlogelwa',ic:'eng',sub:'English'},{t:'9:00-10:00',s:'ECO',r:'HC.11D',tc:'Sikhwari',ic:'eco',sub:'Economics'},{t:'10:00-11:00',s:'HIST',r:'HC.10G',tc:'Tsimbi',ic:'hist',sub:'History'},{t:'11:00-12:00',s:'LUNCH',r:'',tc:'',ic:'lunch',lunch:true},{t:'12:00-13:00',s:'BS',r:'HC.11D',tc:'Thabethe',ic:'bs',sub:'Business Studies'},{t:'13:00-14:00',s:'MLIT',r:'HC.11C',tc:'Gumbi',ic:'mlit',sub:'Maths Lit'},{t:'14:00-15:00',s:'HL',r:'Various',tc:'Your HL Teacher',ic:'hl',sub:'Home Language'}],
+Tuesday:[{t:'7:45-7:55',s:'Register',r:'',tc:'Thabethe',ic:'reg',sub:''},{t:'8:00-9:00',s:'ENG',r:'Hall B',tc:'Motlogelwa',ic:'eng',sub:'English'},{t:'9:00-10:00',s:'HIST',r:'HC.10G',tc:'Tsimbi',ic:'hist',sub:'History'},{t:'10:00-11:00',s:'BS',r:'HC.11D',tc:'Thabethe',ic:'bs',sub:'Business Studies'},{t:'11:00-12:00',s:'LUNCH',r:'',tc:'',ic:'lunch',lunch:true},{t:'12:00-13:00',s:'MLIT',r:'HC.11C',tc:'Gumbi',ic:'mlit',sub:'Maths Lit'},{t:'13:00-14:00',s:'HL',r:'Various',tc:'Your HL Teacher',ic:'hl',sub:'Home Language'},{t:'14:00-15:00',s:'ECO',r:'HC.11D',tc:'Sikhwari',ic:'eco',sub:'Economics'}],
+Wednesday:[{t:'7:45-7:55',s:'Register',r:'',tc:'Thabethe',ic:'reg',sub:''},{t:'8:00-9:00',s:'MLIT',r:'HC.11C',tc:'Gumbi',ic:'mlit',sub:'Maths Lit'},{t:'9:00-10:00',s:'ENG',r:'Hall B',tc:'Motlogelwa',ic:'eng',sub:'English'},{t:'10:00-11:00',s:'ECO',r:'HC.11D',tc:'Sikhwari',ic:'eco',sub:'Economics'},{t:'11:00-12:00',s:'LUNCH',r:'',tc:'',ic:'lunch',lunch:true},{t:'12:00-13:00',s:'HL',r:'Various',tc:'Your HL Teacher',ic:'hl',sub:'Home Language'},{t:'13:00-14:00',s:'HIST',r:'HC.10G',tc:'Tsimbi',ic:'hist',sub:'History'},{t:'14:00-15:00',s:'FREE',r:'',tc:'',ic:'free',free:true}],
+Thursday:[{t:'7:45-7:55',s:'Register',r:'',tc:'Thabethe',ic:'reg',sub:''},{t:'8:00-9:00',s:'MLIT',r:'HC.11C',tc:'Gumbi',ic:'mlit',sub:'Maths Lit'},{t:'9:00-10:00',s:'ENG',r:'Hall B',tc:'Motlogelwa',ic:'eng',sub:'English'},{t:'10:00-11:00',s:'LO',r:'HC.12A',tc:'Ndlovu',ic:'lo',sub:'Life Orientation'},{t:'11:00-12:00',s:'LUNCH',r:'',tc:'',ic:'lunch',lunch:true},{t:'12:00-13:00',s:'BS',r:'HC.11D',tc:'Thabethe',ic:'bs',sub:'Business Studies'},{t:'13:00-14:00',s:'HIST',r:'HC.10G',tc:'Tsimbi',ic:'hist',sub:'History'},{t:'14:00-15:00',s:'HL',r:'Various',tc:'Your HL Teacher',ic:'hl',sub:'Home Language'}],
+'1st Friday':[{t:'7:45-7:55',s:'Register',r:'',tc:'Thabethe',ic:'reg',sub:''},{t:'8:00-9:00',s:'LO',r:'HC.12A',tc:'Ndlovu',ic:'lo',sub:'Life Orientation'},{t:'9:00-10:00',s:'MLIT',r:'HC.11C',tc:'Gumbi',ic:'mlit',sub:'Maths Lit'},{t:'10:00-11:00',s:'ECO',r:'HC.11D',tc:'Sikhwari',ic:'eco',sub:'Economics'},{t:'11:00-12:00',s:'LUNCH',r:'',tc:'',ic:'lunch',lunch:true},{t:'12:00-15:00',s:'FREE',r:'',tc:'',ic:'free',free:true}],
+'2nd Friday':[{t:'7:45-7:55',s:'Register',r:'',tc:'Thabethe',ic:'reg',sub:''},{t:'8:00-9:00',s:'BS',r:'HC.11D',tc:'Thabethe',ic:'bs',sub:'Business Studies'},{t:'9:00-10:00',s:'ENG',r:'Hall B',tc:'Motlogelwa',ic:'eng',sub:'English'},{t:'10:00-11:00',s:'HL',r:'Various',tc:'Your HL Teacher',ic:'hl',sub:'Home Language'},{t:'11:00-12:00',s:'LUNCH',r:'',tc:'',ic:'lunch',lunch:true},{t:'12:00-15:00',s:'FREE',r:'',tc:'',ic:'free',free:true}]
+};
+
+var SUBJECTS_DATA={
+ENG:{nm:'English Home Language',ic:'eng',tc:'Mrs Motlogelwa',rm:'Hall B',topics:[{nm:'Macbeth',ds:'Ambition, guilt, fate.',learn:['Macbeth transformation','Lady Macbeth ambition','Motifs: blood, darkness','Analytical essays']},{nm:'Short Stories and Poetry',ds:'Prescribed texts.',learn:['Literary devices','Theme, setting, character','Compare texts','Comparative essays']},{nm:'Transactional Writing',ds:'Letters, CVs, speeches.',learn:['Formal letters','Newspaper reports','CV writing','Persuasive speeches']},{nm:'Language Structures',ds:'Grammar, punctuation.',learn:['Parts of speech','Correct tenses','Punctuation rules','Figures of speech']},{nm:'Visual Literacy',ds:'Cartoons, ads.',learn:['Interpret visuals','Identify bias','Analyse layout','Answer questions']}]},
+ECO:{nm:'Economics',ic:'eco',tc:'Mr Sikhwari',rm:'HC.11D',topics:[{nm:'Macroeconomics',ds:'GDP, inflation, business cycles.',learn:['Define GDP','Inflation types','Business cycle phases','Growth strategies']},{nm:'Microeconomics',ds:'Demand and supply.',learn:['Law of demand/supply','Market equilibrium','Elasticity','Govt intervention']},{nm:'Market Structures',ds:'Competition, monopoly.',learn:['Compare structures','Pricing strategies','Advantages/disadvantages','SA examples']},{nm:'Economic Systems',ds:'Traditional to mixed.',learn:['Compare systems','SA mixed economy','Development indicators','Sustainability']},{nm:'SA Economy',ds:'Trade, industrialisation.',learn:['Trade patterns','Industrial policy','Unemployment','Govt policies']}]},
+HIST:{nm:'History',ic:'hist',tc:'Mrs Tsimbi',rm:'HC.10G',topics:[{nm:'The Cold War',ds:'1947-1990 superpower conflict.',learn:['Capitalism vs communism','Cuba, Berlin, Korea','Impact on Africa','USSR collapse']},{nm:'Apartheid and Resistance',ds:'Liberation and transition.',learn:['Apartheid legislation','ANC, PAC, SACP, BCM','Soweto 1976','TRC process']},{nm:'Civil Rights USA',ds:'African American movement.',learn:['Jim Crow laws','MLK, Malcolm X, Rosa Parks','Compare to SA struggle','Key legislation']},{nm:'African Empires',ds:'Great Zimbabwe, Mali, Zulu.',learn:['Great Zimbabwe ruins','Mansa Musa and Mali','Shaka Zulu reforms','European colonialism']}]},
+BS:{nm:'Business Studies',ic:'bs',tc:'Mr Vusi Thabethe',rm:'HC.11D',topics:[{nm:'Business Environments',ds:'Micro, market, macro.',learn:['SWOT analysis','Vision and mission','PESTLE factors','SA business legislation']},{nm:'Entrepreneurship',ds:'Starting a business.',learn:['Entrepreneur qualities','Feasibility study','Business plan','Social entrepreneurship']},{nm:'Management and HR',ds:'Functions, leadership.',learn:['POLC management functions','Leadership styles','Recruitment process','Labour relations']},{nm:'Forms of Ownership',ds:'Sole prop, partnership, company.',learn:['Compare ownership forms','Advantages/disadvantages','Legal requirements','Soweto business examples']}]},
+MLIT:{nm:'Mathematical Literacy',ic:'mlit',tc:'Mrs Gumbi',rm:'HC.11C',topics:[{nm:'Personal Finance',ds:'Budget, interest, tax.',learn:['Manage a budget','Simple and compound interest','Income tax','Compare loans']},{nm:'Measurement',ds:'Units, scale, volume.',learn:['Convert units','Scale drawings','Perimeter, area, volume','Real-world problems']},{nm:'Maps and Plans',ds:'Grid references, bearings.',learn:['Grid references','Bearings and directions','Contour lines','Floor plans']},{nm:'Data Handling',ds:'Graphs, averages.',learn:['Bar/pie/line graphs','Mean, median, mode','Probability basics','Analysing real data']}]},
+ISI:{nm:'IsiZulu Home Language',ic:'hl',tc:'Mrs Zondo / Mrs Mkhize',rm:'Various',topics:[{nm:'Incwadi Nezihlobo',ds:'Ukufunda nokubhala.',learn:['Ukuhlola umbhalo','Ukubhala izincwadi','Amasu okufunda','Ukulalela']},{nm:'Uhlelo Lwemibhalo',ds:'Izinhlobo zemibhalo.',learn:['Inovelana','Inoveli','Ibali elifushane','Uhlobo lwesigameko']},{nm:'Izinkondlo',ds:'Uhlobo lwemibhalo.',learn:['Izinhlobo zezinkondlo','Amasu ezinkondlo','Ukuxhumanisa','Ukuhlaziywa']},{nm:'Ulimi Nolimi',ds:'Ukusetshenziswa kolimi.',learn:['Izigaba zezwi','Izinhlobo zesigatshana','Isikhathi sezivakashi','Izinkomba']},{nm:'Ukukhuluma',ds:'Amakhono okukhuluma.',learn:['Ukukhuluma phambi kwabantu','Ukulalela nokuphendula','Ingxoxo','Ukukhulumisana']}]},
+TSV:{nm:'TshiVenda Home Language',ic:'hl',tc:'Mr Muzamane',rm:'Various',topics:[{nm:'Maanda a Vhurifhi',ds:'U pfunda na u ngada.',learn:['U vhiredza manwalwa','U ngada mavhungo','Mazwifari a vhurifhi','U tevhedza']},{nm:'Mavhungo a Vhurifhi',ds:'Mihumbulo ya mavhungo.',learn:['Novele','Tshigwada','Tshivhumbeo','U bveledza']},{nm:'Tshifhinga',ds:'Maitele a u pfunda.',learn:['Mazwifari a tshifhinga','Tshifhinga tsha madi','Ndeme dza pfanelo','U dzula']},{nm:'U Pfiwa',ds:'Madzheniseni a ndilo.',learn:['U amba phanda kha vhathu','U tevhedza u amba','U bvutshedzana','U dzhia ndeme']}]},
+SOT:{nm:'Sesotho Home Language',ic:'hl',tc:'Mrs Peki',rm:'Various',topics:[{nm:'Palo le Lenaneo',ds:'Ho bala le ho ngola.',learn:['Ho hlokomela mongolo','Ho ngola mangolo','Mekhoa ea ho bala','Ho mamela']},{nm:'Mehala ea Mongolo',ds:'Mefuta ea mangolo.',learn:['Buka','Pampiri','Lethathamo','Lefu']},{nm:'Maele le Lithothokiso',ds:'Maele le lithothokiso.',learn:['Mefuta ea lithothokiso','Melemo ea maele','Ho bapisa','Ho hlophisa']},{nm:'Puo ea Sesotho',ds:'Tsebo ea puo.',learn:['Likarolo tsa puo','Mefuta ea mantsoe','Nako ea mantsoe','Litemoso']},{nm:'Ho Bua',ds:'Bokgoni ba ho bua.',learn:['Ho bua ka sechaba','Ho mamela','Puisano','Tlhahiso']}]},
+TSO:{nm:'Xitsonga Home Language',ic:'hl',tc:'Mrs Shikweni',rm:'Various',topics:[{nm:'Ku Hlayisa na Ku Tsala',ds:'Ku hlayisa na ku tsala marito.',learn:['Ku hlayisa ndzilo','Ku tsala mapapila','Tindlela ta ku hlayisa','Ku teka']},{nm:'Mpfuxeto wa Marito',ds:'Swiyimo swa marito.',learn:['Buku','Ntshunxeko','Xihlovo','Mpfilwa']},{nm:'Vuyimbeleri',ds:'Vuyimbeleri na tinxan\'wa.',learn:['Swiyimo swa tinxan\'wa','Vuyimbeleri bya xitsonga','Ku fanerisa','Ku hluvutsa']},{nm:'Ririmi',ds:'Ku tirhisa ririmi.',learn:['Swiyimo swa ririmi','Mihlovo ya ririmi','Nkarhi wa marito','Switirhisiwa']},{nm:'Ku Vulavula',ds:'Xibalo xa ku vulavula.',learn:['Ku vulavula eka vanhu','Ku teka swivulwa','Ku combinha switsundzuxo','Xibalo xa ndlela']}]},
+LO:{nm:'Life Orientation',ic:'lo',tc:'Mr Ndlovu',rm:'HC.12A',topics:[{nm:'Study Skills',ds:'Methods and exam prep.',learn:['Create a timetable','Active recall techniques','Stress management','Time management']},{nm:'Career Guidance',ds:'Paths and funding.',learn:['Career requirements','University applications','Bursary opportunities','Career development plan']},{nm:'Democracy and Rights',ds:'The Constitution.',learn:['Constitutional democracy','Bill of Rights','Civic responsibility','Social justice']},{nm:'Health and Well-being',ds:'Mental health, lifestyle.',learn:['Manage stress','Substance abuse awareness','Healthy lifestyle choices','Building resilience']}]}
+};
+
+var PAPERS={
+ENG:[{yr:'2024',p:'Paper 1',src:'dbe.gov.za'},{yr:'2024',p:'Paper 2',src:'dbe.gov.za'},{yr:'2023',p:'Paper 1',src:'dbe.gov.za'},{yr:'2023',p:'Paper 2',src:'dbe.gov.za'}],
+ECO:[{yr:'2024',p:'Paper 1',src:'dbe.gov.za'},{yr:'2023',p:'Paper 1',src:'dbe.gov.za'},{yr:'2022',p:'Paper 1',src:'dbe.gov.za'}],
+HIST:[{yr:'2024',p:'Paper 1',src:'dbe.gov.za'},{yr:'2024',p:'Paper 2',src:'dbe.gov.za'},{yr:'2023',p:'Paper 1',src:'dbe.gov.za'},{yr:'2023',p:'Paper 2',src:'dbe.gov.za'}],
+BS:[{yr:'2024',p:'Paper 1',src:'dbe.gov.za'},{yr:'2023',p:'Paper 1',src:'dbe.gov.za'},{yr:'2022',p:'Paper 1',src:'dbe.gov.za'}],
+MLIT:[{yr:'2024',p:'Paper 1',src:'dbe.gov.za'},{yr:'2024',p:'Paper 2',src:'dbe.gov.za'},{yr:'2023',p:'Paper 1',src:'dbe.gov.za'},{yr:'2023',p:'Paper 2',src:'dbe.gov.za'}],
+ISI:[{yr:'2024',p:'Paper 1',src:'dbe.gov.za'},{yr:'2023',p:'Paper 1',src:'dbe.gov.za'},{yr:'2022',p:'Paper 1',src:'dbe.gov.za'}],
+TSV:[{yr:'2024',p:'Paper 1',src:'dbe.gov.za'},{yr:'2023',p:'Paper 1',src:'dbe.gov.za'}],
+SOT:[{yr:'2024',p:'Paper 1',src:'dbe.gov.za'},{yr:'2023',p:'Paper 1',src:'dbe.gov.za'}],
+TSO:[{yr:'2024',p:'Paper 1',src:'dbe.gov.za'},{yr:'2023',p:'Paper 1',src:'dbe.gov.za'}],
+LO:[{yr:'2024',p:'Paper 1',src:'dbe.gov.za'},{yr:'2023',p:'Paper 1',src:'dbe.gov.za'}]
+};
+
+var TUTORIALS=[
+{nm:'Mindset Learn',plat:'YouTube',desc:'Official CAPS video lessons for every Grade 11 subject.',subj:['ENG','ECO','HIST','BS','MLIT','LO'],bg:'linear-gradient(135deg,#ff0000,#cc0000)'},
+{nm:'Khan Academy',plat:'Website + App',desc:'Free education. Math, economics, science.',subj:['ECO','MLIT'],bg:'linear-gradient(135deg,#1cb5e0,#00838f)'},
+{nm:'CrashCourse',plat:'YouTube',desc:'Engaging history and economics videos.',subj:['HIST','ECO'],bg:'linear-gradient(135deg,#ffd600,#f9a825)'},
+{nm:'Everything Maths',plat:'everythingmaths.co.za',desc:'Free CAPS textbooks with videos and exercises.',subj:['ENG','ECO','HIST','BS','MLIT','LO'],bg:'linear-gradient(135deg,#0a6b3a,#12b863)'},
+{nm:'SA Exam Papers',plat:'saexamspapers.co.za',desc:'Free past NSC papers and memos.',subj:['ENG','ECO','HIST','BS','MLIT','ISI','TSV','SOT','TSO','LO'],bg:'linear-gradient(135deg,#37474f,#263238)'},
+{nm:'Test Papers',plat:'testpapers.co.za',desc:'Grade 11 past papers and study guides.',subj:['ENG','ECO','HIST','BS','MLIT','ISI','TSV','SOT','TSO','LO'],bg:'linear-gradient(135deg,#5d4037,#3e2723)'},
+{nm:'The Organic Chemistry Tutor',plat:'YouTube',desc:'Clear maths explanations for Maths Lit.',subj:['MLIT'],bg:'linear-gradient(135deg,#2962ff,#1565c0)'},
+{nm:'Mindscape',plat:'App',desc:'SA study app with CAPS notes and questions.',subj:['ENG','ECO','HIST','BS','MLIT','LO'],bg:'linear-gradient(135deg,#e65100,#bf360c)'}
+];
+
+var QUIZZES={
+ENG:[{q:'Who wrote Macbeth?',opts:['Dickens','Shakespeare','Austen','Twain'],ans:1},{q:'What is a metaphor?',opts:['Using like/as','No like/as','Exaggeration','Sound'],ans:1},{q:'Personification means?',opts:['Human to non-human','Comparing','A poem','A rhyme'],ans:0},{q:'Thesis statement purpose?',opts:['End essay','Main argument','List sources','Greet reader'],ans:1}],
+ECO:[{q:'GDP means?',opts:['General Domestic Price','Gross Domestic Product','Govt Dev Plan','Global Dist Pattern'],ans:1},{q:'Inflation is?',opts:['Price decrease','General price increase','Wage increase','A tax'],ans:1},{q:'Law of demand?',opts:['Price up demand up','Price up demand down','No relation','Constant'],ans:1},{q:'PESTLE - S?',opts:['Supply','Social','Sales','Strategy'],ans:1}],
+HIST:[{q:'Cold War began?',opts:['1914','1939','1947','1990'],ans:2},{q:'Soweto Uprising about?',opts:['Uniforms','Afrikaans medium','Free education','Exams'],ans:1},{q:'First democratic president?',opts:['Mbeki','De Klerk','Mandela','Zuma'],ans:2},{q:'Berlin Wall divided?',opts:['France/Germany','East/West Berlin','UK/Ireland','USA/Mexico'],ans:1}],
+BS:[{q:'SWOT - W?',opts:['Work','Weaknesses','Wealth','Wisdom'],ans:1},{q:'Sole proprietorship?',opts:['Govt owned','One person','Shareholders','Two people'],ans:1},{q:'4 management functions?',opts:['Plan,Organise,Lead,Control','Buy,Sell,Profit,Save','Hire,Fire,Train,Pay','Think,Do,Check,Act'],ans:0},{q:'Entrepreneur is?',opts:['Govt official','Starts business','Bank manager','Customer'],ans:1}],
+MLIT:[{q:'Compound interest?',opts:['On original only','Principal + accumulated','A tax','A fee'],ans:1},{q:'cm in 1 metre?',opts:['10','50','100','1000'],ans:2},{q:'Mean of 4,6,8,10,12?',opts:['6','7','8','10'],ans:2},{q:'0.75 as %?',opts:['7.5%','75%','0.75%','750%'],ans:1}],
+ISI:[{q:'IsiZulu: Umama means?',opts:['Father','Mother','Sister','Teacher'],ans:1},{q:'IsiZulu: Plural of indlu?',opts:['Amadlu','Izindlu','Ondlu','Umdlu'],ans:1}],
+TSV:[{q:'TshiVenda: Mufumakadzi means?',opts:['Man','Woman','Child','Elder'],ans:1}],
+SOT:[{q:'Sesotho: Ntate means?',opts:['Mother','Father','Brother','Sister'],ans:1}],
+TSO:[{q:'Xitsonga: Hosi means?',opts:['Father','Teacher','Chief','Brother'],ans:2}],
+LO:[{q:'Bill of Rights?',opts:['School rules','Chapter 2 Constitution','Business doc','Health guide'],ans:1},{q:'Pomodoro technique?',opts:['5 hours straight','25min + 5min break','1 page/hour','Cooking'],ans:1},{q:'HIV means?',opts:['Human Immune Virus','Human Immunodeficiency Virus','Health Infection','High Immune Value'],ans:1}]
+};
+
+var FLASHCARDS=[
+{q:'Soweto Uprising year?',a:'1976 - Students protested Afrikaans as medium of instruction.'},
+{q:'PESTLE stands for?',a:'Political, Economic, Social, Technological, Legal, Environmental'},
+{q:'Speed formula?',a:'Speed = Distance / Time'},
+{q:'Who wrote Macbeth?',a:'William Shakespeare (1606)'},
+{q:'What is GDP?',a:'Gross Domestic Product - total value of goods and services'},
+{q:'Metaphor?',a:'Comparison WITHOUT like or as'},
+{q:'4 management functions?',a:'Planning, Organising, Leading, Controlling (POLC)'},
+{q:'Law of demand?',a:'Price up means demand down and vice versa'},
+{q:'Compound interest?',a:'Interest on principal AND accumulated interest'},
+{q:'First democratic president?',a:'Nelson Mandela (1994-1999)'},
+{q:'Sole proprietorship?',a:'Business owned by ONE person'},
+{q:'Inflation?',a:'General increase in prices over time'},
+{q:'Berlin Wall?',a:'Divided East and West Berlin (1961-1989)'},
+{q:'Monopoly?',a:'ONE seller controls price and supply'},
+{q:'Simple interest?',a:'I = P times r times t'}
+];
+
+var currentUser=null,activeDay='Monday',aiOpen=false,timerInterval=null,timerSeconds=25*60,timerRunning=false,flashIdx=0,studyTab='timer',paperSubj='ENG',tutFilter='all',quizState={subj:null,idx:0,score:0,total:0,answered:false};
+var lastScrollTop=0,scrollTicking=false,hideTimer=null;
+var pages,bnav,elTopnav,aiFab;
+
+function initScrollListener(){
+  pages=document.getElementById('pages');
+  bnav=document.getElementById('bnav');
+  elTopnav=document.getElementById('topnav');
+  aiFab=document.getElementById('aiFab');
+  pages.addEventListener('scroll',function(){
+    if(!scrollTicking){
+      window.requestAnimationFrame(function(){handleScroll();scrollTicking=false});
+      scrollTicking=true;
+    }
+  },{passive:true});
+}
+function handleScroll(){
+  var st=pages.scrollTop,delta=st-lastScrollTop;
+  if(st<=20){showChrome();lastScrollTop=st;return}
+  if(delta>3){clearTimeout(hideTimer);showChrome()}
+  else if(delta<-3){clearTimeout(hideTimer);hideTimer=setTimeout(hideChrome,80)}
+  lastScrollTop=st;
+}
+function showChrome(){bnav.classList.remove('nav-hide');elTopnav.classList.remove('nav-hide');aiFab.classList.remove('fab-hide')}
+function hideChrome(){bnav.classList.add('nav-hide');elTopnav.classList.add('nav-hide');aiFab.classList.add('fab-hide')}
+
+var DB={get:function(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set:function(k,v){localStorage.setItem(k,JSON.stringify(v))},del:function(k){localStorage.removeItem(k)}};
+
+(function(){
+  var c=document.getElementById('aParts');
+  for(var i=0;i<25;i++){
+    var p=document.createElement('div');
+    p.className='ap';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDuration=(8+Math.random()*14)+'s';
+    p.style.animationDelay=(-Math.random()*10)+'s';
+    p.style.width=p.style.height=(2+Math.random()*3)+'px';
+    c.appendChild(p);
+  }
+})();
+
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    document.getElementById('loader').classList.add('done');
+    var s=DB.get('g11d_ses');
+    if(s) enterApp(s);
+  },600);
+});
+
+function doAuth(){
+  var nm=document.getElementById('aName').value.trim(),
+      cd=document.getElementById('aCode').value.trim(),
+      err=document.getElementById('aErr');
+  if(!nm){err.textContent='Please enter your name.';err.classList.add('show');return}
+  if(cd!=='11D'){err.textContent='Wrong class code. Ask Bradley!';err.classList.add('show');return}
+  err.classList.remove('show');
+  DB.set('g11d_ses',{nm:nm,ts:Date.now()});
+  enterApp({nm:nm});
+}
+
+function enterApp(u){
+  currentUser=u;
+  document.getElementById('auth').classList.add('hide');
+  document.getElementById('app').classList.add('show');
+  var ini=u.nm.split(' ').map(function(w){return w[0]}).join('').toUpperCase().substring(0,2);
+  document.getElementById('navAv').textContent=ini;
+  document.getElementById('welcH').textContent='Hey, '+u.nm.split(' ')[0]+'!';
+  initScrollListener();
+  renderHome();renderSchedule();renderSubjects();renderStudy();renderQuizHome();
+}
+
+function nav(pg,btn){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.bnav-i').forEach(function(b){b.classList.remove('on')});
+  document.getElementById(pg).classList.add('on');
+  btn.classList.add('on');
+  pages.scrollTop=0;
+  showChrome();
+  lastScrollTop=0;
+}
+
+function renderHome(){
+  var today=getDayName(),sched=SCHEDULE[today]||SCHEDULE['Monday'],nowHTML='',found=false;
+  for(var i=0;i<sched.length;i++){var p=sched[i];if(p.sub&&!found){nowHTML='<div class="now"><div class="now-ic">'+IC[p.ic]+'</div><div class="now-inf"><div class="now-sub">'+p.sub+'</div><div class="now-det">'+(p.r?p.r+' - '+p.tc:'')+'</div></div></div>';found=true}}
+  if(!found) nowHTML='<div class="now"><div class="now-ic">'+IC.free+'</div><div class="now-inf"><div class="now-sub">No classes right now</div><div class="now-det">Enjoy your free time!</div></div></div>';
+  document.getElementById('nowCard').innerHTML=nowHTML;
+  var items=[
+    {ic:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',lb:'Schedule',fn:"nav('pgSched',document.querySelector('[data-p=pgSched]'))"},
+    {ic:IC.eng,lb:'English',fn:"openSubject('ENG')"},
+    {ic:IC.eco,lb:'Economics',fn:"openSubject('ECO')"},
+    {ic:IC.hist,lb:'History',fn:"openSubject('HIST')"},
+    {ic:IC.bs,lb:'Business',fn:"openSubject('BS')"},
+    {ic:IC.mlit,lb:'MLIT',fn:"openSubject('MLIT')"},
+    {ic:IC.hl,lb:'IsiZulu',fn:"openSubject('ISI')"},
+    {ic:IC.hl,lb:'TshiVenda',fn:"openSubject('TSV')"},
+    {ic:IC.hl,lb:'Sesotho',fn:"openSubject('SOT')"},
+    {ic:IC.hl,lb:'Xitsonga',fn:"openSubject('TSO')"},
+    {ic:IC.lo,lb:'LO',fn:"openSubject('LO')"},
+    {ic:'<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',lb:'Study Cave',fn:"nav('pgStudy',document.querySelector('[data-p=pgStudy]'))"},
+    {ic:IC.paper,lb:'Past Papers',fn:"nav('pgStudy',document.querySelector('[data-p=pgStudy]'));setTimeout(function(){showStudyTab('papers',document.querySelectorAll('.study-tab')[2])},100)"},
+    {ic:'<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',lb:'Creators',fn:"showCreators()"}
+  ];
+  document.getElementById('quickGrid').innerHTML=items.map(function(q){return '<div class="icon-item" onclick="'+q.fn+'"><div class="icon-box">'+q.ic+'</div><div class="icon-lb">'+q.lb+'</div></div>'}).join('');
+}
+
+function getDayName(){
+  var d=new Date(),days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],day=days[d.getDay()];
+  if(day==='Friday'){var w=Math.ceil(d.getDate()/7);return w%2===1?'1st Friday':'2nd Friday'}
+  return day==='Saturday'||day==='Sunday'?'Monday':day;
+}
+
+function renderSchedule(){
+  var days=['Monday','Tuesday','Wednesday','Thursday','1st Friday','2nd Friday'];
+  document.getElementById('ttTabs').innerHTML=days.map(function(d){return '<button class="tt-tab'+(d===activeDay?' on':'')+'" onclick="switchDay(\''+d+'\',this)">'+d+'</button>'}).join('');
+  renderDay(activeDay);
+}
+function switchDay(d,btn){activeDay=d;document.querySelectorAll('.tt-tab').forEach(function(t){t.classList.remove('on')});btn.classList.add('on');renderDay(d)}
+function renderDay(day){
+  document.getElementById('ttBody').innerHTML=(SCHEDULE[day]||[]).map(function(p){
+    var cls='tt-card';if(p.lunch)cls+=' lunch';if(p.free)cls+=' free';
+    return '<div class="tt-row"><div class="tt-time">'+p.t+'</div><div class="'+cls+'"><div class="tt-ic">'+IC[p.ic]+'</div><div class="tt-inf"><div class="tt-sub">'+p.s+'</div><div class="tt-det">'+(p.r?p.r+(p.tc?' - '+p.tc:''):'')+'</div></div></div></div>';
+  }).join('');
+}
+
+function renderSubjects(){
+  document.getElementById('subjContent').innerHTML='<div class="icon-grid">'+
+    Object.keys(SUBJECTS_DATA).map(function(k){
+      var s=SUBJECTS_DATA[k];
+      var shortNm=s.nm.replace(' Home Language','').replace('Mathematical','Maths');
+      return '<div class="icon-item" onclick="openSubject(\''+k+'\')"><div class="icon-box">'+IC[s.ic]+'</div><div class="icon-lb">'+shortNm+'</div></div>';
+    }).join('')+'</div>';
+}
+
+function openSubject(key){
+  var s=SUBJECTS_DATA[key];if(!s)return;
+  document.getElementById('subjContent').innerHTML=
+    '<div class="sd-back" onclick="renderSubjects()">Back</div>'+
+    '<div class="sd-head"><div class="sd-ic">'+IC[s.ic]+'</div><div><div class="sd-nm">'+s.nm+'</div><div class="sd-tch">'+s.tc+' - '+s.rm+'</div></div></div>'+
+    s.topics.map(function(t,i){return '<div class="topic-card" onclick="openTopic(\''+key+'\','+i+')"><div class="topic-nm">'+t.nm+'</div><div class="topic-ds">'+t.ds+'</div></div>'}).join('');
+  pages.scrollTop=0;
+}
+
+function openTopic(key,idx){
+  var t=SUBJECTS_DATA[key].topics[idx];
+  document.getElementById('modalContent').innerHTML=
+    '<h3 style="font-family:var(--fd);font-size:22px;font-weight:700;color:var(--dk);margin-bottom:4px">'+t.nm+'</h3>'+
+    '<p style="font-family:var(--fm);font-size:10px;color:var(--g2);margin-bottom:16px">'+SUBJECTS_DATA[key].nm+'</p>'+
+    '<p style="font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:16px">'+t.ds+'</p>'+
+    '<div style="font-family:var(--fd);font-size:16px;font-weight:700;color:var(--g1);margin-bottom:10px">What You Need to Know</div>'+
+    '<ul style="list-style:none">'+t.learn.map(function(l){return '<li style="font-size:13px;color:var(--tx2);line-height:1.5;padding:8px 12px 8px 18px;position:relative;margin-bottom:6px;background:var(--bg);border-radius:10px;border-left:3px solid var(--g3)">'+l+'</li>'}).join('')+'</ul>';
+  document.getElementById('modalBg').classList.add('open');
+}
+function closeModal(){document.getElementById('modalBg').classList.remove('open')}
+
+function showStudyTab(tab,btn){studyTab=tab;document.querySelectorAll('.study-tab').forEach(function(t){t.classList.remove('on')});btn.classList.add('on');renderStudy()}
+function renderStudy(){if(studyTab==='timer')renderTimer();else if(studyTab==='flash')renderFlash();else if(studyTab==='papers')renderPapers();else renderTutorials()}
+
+function renderTimer(){
+  var m=Math.floor(timerSeconds/60),s=timerSeconds%60;
+  document.getElementById('studyContent').innerHTML=
+    '<div class="timer-ring"><div class="timer-time">'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s+'</div><div class="timer-label">'+(timerRunning?'STUDYING':'POMODORO')+'</div></div>'+
+    '<div class="timer-btns"><button class="timer-btn primary" onclick="toggleTimer()">'+(timerRunning?'Pause':'Start')+'</button><button class="timer-btn secondary" onclick="resetTimer()">Reset</button></div>'+
+    '<div class="gc" style="text-align:center"><div style="font-family:var(--fd);font-size:16px;font-weight:700;color:var(--dk);margin-bottom:6px">How It Works</div><div style="font-size:12px;color:var(--tx2);line-height:1.5">Study 25 min, break 5 min. Repeat 4x, then 15 min break.</div></div>';
+}
+function toggleTimer(){
+  if(timerRunning){clearInterval(timerInterval);timerRunning=false}
+  else{timerRunning=true;timerInterval=setInterval(function(){timerSeconds--;if(timerSeconds<=0){clearInterval(timerInterval);timerRunning=false;timerSeconds=25*60;alert('Time up! Break time.')}renderTimer()},1000)}
+  renderTimer();
+}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSeconds=25*60;renderTimer()}
+
+function renderFlash(){
+  var fc=FLASHCARDS[flashIdx];
+  document.getElementById('studyContent').innerHTML=
+    '<div class="flash-counter">Card '+(flashIdx+1)+'/'+FLASHCARDS.length+'</div>'+
+    '<div class="flashcard" onclick="this.classList.toggle(\'revealed\')"><div class="flashcard-q">'+fc.q+'</div><div class="flashcard-a">'+fc.a+'</div><div class="flashcard-hint">Tap to reveal</div></div>'+
+    '<div class="flash-nav"><button onclick="flashIdx=(flashIdx-1+FLASHCARDS.length)%FLASHCARDS.length;renderFlash()">Prev</button><button onclick="flashIdx=(flashIdx+1)%FLASHCARDS.length;renderFlash()">Next</button></div>';
+}
+
+function renderPapers(){
+  var keys=Object.keys(PAPERS);
+  var selHtml='<div class="res-subj-sel"><button class="res-subj-btn'+(paperSubj==='all'?' on':'')+'" onclick="paperSubj=\'all\';renderPapers()">All</button>'+
+    keys.map(function(k){return '<button class="res-subj-btn'+(paperSubj===k?' on':'')+'" onclick="paperSubj=\''+k+'\';renderPapers()">'+(SUBJECTS_DATA[k]?SUBJECTS_DATA[k].nm.split(' ')[0]:k)+'</button>'}).join('')+'</div>';
+  var papers=[];
+  if(paperSubj==='all'){keys.forEach(function(k){PAPERS[k].forEach(function(p){papers.push({subj:k,paper:p})})})}
+  else{PAPERS[paperSubj].forEach(function(p){papers.push({subj:paperSubj,paper:p})})}
+  var html=selHtml+'<div class="gc" style="text-align:center"><div style="font-family:var(--fd);font-size:15px;font-weight:700;color:var(--dk);margin-bottom:4px">Where to Download</div><div style="font-size:11px;color:var(--tx2);line-height:1.5">Google: dbe.gov.za | saexamspapers.co.za | testpapers.co.za</div></div>';
+  html+=papers.map(function(item){
+    var sn=SUBJECTS_DATA[item.subj]?SUBJECTS_DATA[item.subj].nm:item.subj;
+    return '<div class="paper-card"><div class="paper-ic">'+IC.paper+'</div><div class="paper-inf"><div class="paper-nm">'+item.paper.p+'</div><div class="paper-src">'+sn+' - '+item.paper.src+'</div></div><div class="paper-yr">'+item.paper.yr+'</div></div>';
+  }).join('');
+  document.getElementById('studyContent').innerHTML=html;
+}
+
+function renderTutorials(){
+  var keys=Object.keys(SUBJECTS_DATA);
+  var selHtml='<div class="res-subj-sel"><button class="res-subj-btn'+(tutFilter==='all'?' on':'')+'" onclick="tutFilter=\'all\';renderTutorials()">All</button>'+
+    keys.map(function(k){return '<button class="res-subj-btn'+(tutFilter===k?' on':'')+'" onclick="tutFilter=\''+k+'\';renderTutorials()">'+SUBJECTS_DATA[k].nm.split(' ')[0]+'</button>'}).join('')+'</div>';
+  var filtered=tutFilter==='all'?TUTORIALS:TUTORIALS.filter(function(t){return t.subj.indexOf(tutFilter)!==-1});
+  var html=selHtml+'<div class="gc" style="text-align:center"><div style="font-family:var(--fd);font-size:15px;font-weight:700;color:var(--dk);margin-bottom:4px">Search on YouTube/Google</div><div style="font-size:11px;color:var(--tx2);line-height:1.5">Watch videos, take notes, practice.</div></div>';
+  html+=filtered.map(function(t){
+    return '<div class="tut-card"><div class="tut-top"><div class="tut-av" style="background:'+t.bg+'">'+IC.play+'</div><div><div class="tut-name">'+t.nm+'</div><div class="tut-plat">'+t.plat+'</div></div></div><div class="tut-desc">'+t.desc+'</div><div class="tut-subj-tags">'+
+      t.subj.filter(function(s){return SUBJECTS_DATA[s]}).map(function(s){return '<span class="tut-tag">'+SUBJECTS_DATA[s].nm.split(' ')[0]+'</span>'}).join('')+'</div></div>';
+  }).join('');
+  document.getElementById('studyContent').innerHTML=html;
+}
+
+function renderQuizHome(){
+  var keys=Object.keys(QUIZZES);
+  document.getElementById('quizContent').innerHTML='<div class="quiz-subj-grid">'+
+    keys.map(function(k){var s=SUBJECTS_DATA[k];return '<div class="quiz-subj-item" onclick="startQuiz(\''+k+'\')">'+IC[s.ic]+'<div class="qs-nm">'+s.nm.split(' ')[0]+'</div><div class="qs-cnt">'+QUIZZES[k].length+' Qs</div></div>'}).join('')+'</div>';
+}
+function startQuiz(subj){quizState={subj:subj,idx:0,score:0,total:QUIZZES[subj].length,answered:false};renderQuizQ()}
+function renderQuizQ(){
+  var qs=QUIZZES[quizState.subj];
+  if(quizState.idx>=qs.length){renderQuizScore();return}
+  var q=qs[quizState.idx],letters=['A','B','C','D'];
+  document.getElementById('quizContent').innerHTML=
+    '<div style="font-family:var(--fm);font-size:10px;color:var(--tx3);margin-bottom:12px">Q'+(quizState.idx+1)+'/'+quizState.total+' - '+SUBJECTS_DATA[quizState.subj].nm+'</div>'+
+    '<div class="quiz-card"><div class="quiz-q">'+q.q+'</div><div class="quiz-opts">'+
+    q.opts.map(function(o,i){return '<div class="quiz-opt" onclick="answerQuiz('+i+')"><div class="opt-letter">'+letters[i]+'</div><div>'+o+'</div></div>'}).join('')+'</div></div>';
+}
+function answerQuiz(chosen){
+  if(quizState.answered)return;quizState.answered=true;
+  var q=QUIZZES[quizState.subj][quizState.idx],correct=q.ans;
+  if(chosen===correct)quizState.score++;
+  document.querySelectorAll('.quiz-opt').forEach(function(o,i){o.classList.add('disabled');if(i===correct)o.classList.add('correct');if(i===chosen&&chosen!==correct)o.classList.add('wrong')});
+  var btn=document.createElement('button');btn.className='quiz-next';
+  btn.textContent=quizState.idx<quizState.total-1?'Next':'See Results';
+  btn.onclick=function(){quizState.idx++;quizState.answered=false;renderQuizQ()};
+  document.querySelector('.quiz-card').appendChild(btn);
+}
+function renderQuizScore(){
+  var pct=Math.round(quizState.score/quizState.total*100);
+  document.getElementById('quizContent').innerHTML=
+    '<div class="quiz-score"><div class="quiz-score-v">'+quizState.score+'/'+quizState.total+'</div><div class="quiz-score-l">'+pct+'% CORRECT</div></div>'+
+    '<div style="text-align:center;margin-top:16px"><button onclick="startQuiz(\''+quizState.subj+'\')" style="padding:12px 24px;border-radius:50px;font-family:var(--fm);font-size:10px;cursor:pointer;border:1px solid var(--b);background:rgba(255,255,255,.72);color:var(--tx2);margin-right:8px">Retry</button><button onclick="renderQuizHome()" style="padding:12px 24px;border-radius:50px;font-family:var(--fm);font-size:10px;cursor:pointer;border:0;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff">All Subjects</button></div>';
+}
+
+function showCreators(){
+  document.getElementById('modalContent').innerHTML=
+    '<div style="text-align:center;margin-bottom:24px"><div style="font-family:var(--fd);font-size:24px;font-weight:700;color:var(--dk);margin-bottom:4px">Creators</div><div style="font-family:var(--fm);font-size:10px;color:var(--g2);letter-spacing:.1em">MADE WITH CARE FOR GRADE 11D</div></div>'+
+    '<div class="creator"><div class="cr-av" style="background:linear-gradient(135deg,var(--g1),var(--g3))"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><div><div class="cr-nm">Bradley Mofokeng</div><div class="cr-role">CREATOR - GRADE 11D</div><div class="cr-desc">Mastermind behind this app. Designed the concept and provided all class data.</div></div></div>'+
+    '<div class="creator"><div class="cr-av" style="background:linear-gradient(135deg,#e85d3a,#ff7a55)"><svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 014 4v1h2a2 2 0 012 2v2a4 4 0 01-2 3.5V16a2 2 0 01-2 2h-1v1a2 2 0 01-2 2h-2a2 2 0 01-2-2v-1H9a2 2 0 01-2-2v-1.5A4 4 0 015 11V9a2 2 0 012-2h1V6a4 4 0 014-4z"/></svg></div><div><div class="cr-nm">MiMo</div><div class="cr-role">CO-CREATOR - AI ASSISTANT</div><div class="cr-desc">Built by Xiaomi LLM Core Team. Wrote code, designed UI, built the AI.</div></div></div>'+
+    '<div style="text-align:center;margin-top:20px;padding:16px;background:var(--bg);border-radius:14px"><div style="font-family:var(--fm);font-size:9px;color:var(--tx3);line-height:1.6">Sekano Ntoane Secondary School<br>Grade 11D - 2026<br>Class Teacher: Mr Vusi Thabethe</div></div>';
+  document.getElementById('modalBg').classList.add('open');
+}
+
+function toggleAI(){aiOpen=!aiOpen;document.getElementById('aiPanel').classList.toggle('open',aiOpen);document.getElementById('aiFab').style.display=aiOpen?'none':'';if(aiOpen)document.getElementById('aiInput').focus()}
+function aiSend(){var inp=document.getElementById('aiInput'),q=inp.value.trim();if(!q)return;addMsg(q,'user');inp.value='';var td=addMsg('<span class="tdots"><span></span><span></span><span></span></span>','bot');setTimeout(function(){td.innerHTML=getAIResponse(q).replace(/\n/g,'<br>')},800+Math.random()*500)}
+function aiQuick(q){document.getElementById('aiInput').value=q;aiSend()}
+function addMsg(t,w){var m=document.getElementById('aiMsgs'),d=document.createElement('div');d.className='ai-msg '+w;d.innerHTML=t;m.appendChild(d);m.scrollTop=m.scrollHeight;return d}
+
+function getAIResponse(q){
+  var ql=q.toLowerCase();
+  if(/^(hi|hey|hello|sup|yo)/i.test(ql)) return "Hey! Ask about subjects, schedule, past papers, tutorials, or study tips!";
+  if(/schedule|timetable|today/i.test(ql)){var day=getDayName(),s=SCHEDULE[day]||SCHEDULE['Monday'];return "Schedule for "+day+":\n\n"+s.filter(function(p){return p.sub}).map(function(p){return "- "+p.t+" - "+p.sub+" ("+p.tc+")"}).join("\n")}
+  if(/past paper|exam|revision/i.test(ql)) return "Past papers: Google these:\n- dbe.gov.za\n- saexamspapers.co.za\n- testpapers.co.za\n\nStudy > Past Papers for full list!";
+  if(/youtube|tutorial|video/i.test(ql)) return "Best channels:\n- Mindset Learn - CAPS\n- Khan Academy - Free\n- CrashCourse - History/ECO\n- Everything Maths - Textbook\n\nStudy > Tutorials for full list!";
+  if(/isizulu/i.test(ql)) return "IsiZulu (Mrs Zondo / Mrs Mkhize):\nIncwadi, Izinkondlo, Uhlelo, Ulimi, Ukukhuluma\nTip: Funda izingoma nezinkondlo nsuku zonke!";
+  if(/tshivenda|venda/i.test(ql)) return "TshiVenda (Mr Muzamane):\nMaanda, Mavhungo, Tshifhinga, U Pfiwa\nTip: Pfunda tshifhinga tshoṱhe!";
+  if(/sesotho|sotho/i.test(ql)) return "Sesotho (Mrs Peki):\nPalo, Mohala, Maele, Puo, Ho Bua\nTip: Bala libuka tsohle tsa hao!";
+  if(/xitsonga|tsonga|shangaan/i.test(ql)) return "Xitsonga (Mrs Shikweni):\nKu Hlayisa, Mpfuxeto, Vuyimbeleri, Ririmi, Ku Vulavula\nTip: Hlayisa matala wo hlawuleka!";
+  if(/english|eng|macbeth/i.test(ql)) return "English (Mrs Motlogelwa, Hall B):\nMacbeth, Poetry, Writing, Grammar, Visual Literacy\nTip: Practice PEEL essays!";
+  if(/economics|eco|gdp/i.test(ql)) return "Economics (Mr Sikhwari, HC.11D):\nMacro, Micro, Markets, Systems, SA Economy\nTip: Draw demand-supply graphs!";
+  if(/history|hist|cold war|apartheid/i.test(ql)) return "History (Mrs Tsimbi, HC.10G):\nCold War, Apartheid, Civil Rights, African Empires\nTip: Intro + Evidence + Conclusion!";
+  if(/business|bs|swot/i.test(ql)) return "Business Studies (Mr Thabethe, HC.11D):\nEnvironments, Entrepreneurship, Management, Ownership\nTip: Memorise PESTLE and SWOT!";
+  if(/maths|math|mlit/i.test(ql)) return "Maths Lit (Mrs Gumbi, HC.11C):\nFinance, Measurement, Maps, Data\nTip: Practice unit conversions!";
+  if(/lo|life orientation/i.test(ql)) return "LO (Mr Ndlovu, HC.12A):\nStudy Skills, Careers, Democracy, Health";
+  if(/teacher/i.test(ql)) return "Teachers:\n- Mr Thabethe - BS\n- Mrs Motlogelwa - ENG\n- Mr Sikhwari - ECO\n- Mrs Tsimbi - HIST\n- Mrs Gumbi - MLIT\n- Mr Ndlovu - LO\n- Mrs Zondo/Mkhize - IsiZulu\n- Mr Muzamane - TshiVenda\n- Mrs Peki - Sesotho\n- Mrs Shikweni - Xitsonga";
+  if(/study|tips/i.test(ql)) return "Study tips:\n1. Weekly timetable\n2. Active recall\n3. Pomodoro blocks\n4. Hardest subjects first\n5. Past papers\n6. Tutorials\n7. Teach someone\n8. Sleep 7+ hours\n9. Ask teachers!";
+  if(/creator|mimo|bradley/i.test(ql)) return "Created by:\nBradley Mofokeng - Creator\nMiMo (Xiaomi) - Co-Creator";
+  return "Try asking about:\n- Schedule\n- Subjects (IsiZulu, TshiVenda, Sesotho, Xitsonga)\n- Past papers\n- Tutorials\n- Teachers\n- Study tips";
+}
+
+document.getElementById('aCode').addEventListener('keypress',function(e){if(e.key==='Enter')doAuth()});
+document.getElementById('aName').addEventListener('keypress',function(e){if(e.key==='Enter')document.getElementById('aCode').focus()});
+</script>
+</body>
+                                              </html>
