@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Grade 11D · S.N.H.S.</title>
+    <meta name="theme-color" content="#2E7D32">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;600&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --green-900:#1B5E20;--green-700:#2E7D32;--green-500:#4CAF50;--green-300:#81C784;--green-100:#E8F5E9;
+            --bg:#F4F9F4;--bg-alt:#EAF3EA;--surface:#FFFFFF;
+            --text-primary:#1a1a1a;--text-secondary:#4a6a4e;--text-muted:#8aa88e;
+            --border:#C8E6C9;--shadow-sm:rgba(46,125,50,0.06);
+        }
+        [data-theme="dark"] {
+            --bg:#0a120b;--bg-alt:#111e13;--surface:#162018;
+            --text-primary:#e8f0e9;--text-secondary:#8aaa8e;--text-muted:#4a6a4e;
+            --border:#1e3321;--shadow-sm:rgba(0,0,0,0.2);
+        }
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text-primary);min-height:100vh;display:flex;justify-content:center;overflow-x:hidden;transition:background .5s,color .5s;}
+        body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");opacity:.015;pointer-events:none;z-index:9999;}
+        #particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
+
+        /* Splash */
+        #splash-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--green-700),var(--green-900));display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:5000;animation:splashOut .7s ease-in-out 3s forwards;}
+        .splash-crest{width:100px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:16px;opacity:0;transform:scale(.5) rotate(-10deg);animation:badgeIn .8s cubic-bezier(.34,1.56,.64,1) .3s forwards;}
+        .splash-crest svg{width:100%;height:100%;}
+        .splash-title{font-family:'Cinzel',serif;font-size:2.4rem;color:#fff;font-weight:900;letter-spacing:.08em;opacity:0;transform:translateY(16px);animation:slideUp .7s ease-out .8s forwards;}
+        .splash-motto{font-family:'Cinzel',serif;font-size:.7rem;color:rgba(255,255,255,.5);letter-spacing:.2em;text-transform:uppercase;margin-top:4px;opacity:0;animation:fadeIn .5s ease-out 1.1s forwards;}
+        .splash-class{font-size:.85rem;color:rgba(255,255,255,.65);margin-top:12px;letter-spacing:.1em;text-transform:uppercase;opacity:0;animation:fadeIn .5s ease-out 1.4s forwards;}
+        .splash-dots{display:flex;gap:6px;margin-top:24px;}
+        .splash-dots span{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);opacity:0;animation:dotPop .4s ease-out forwards;}
+        .splash-dots span:nth-child(1){animation-delay:1.8s;}.splash-dots span:nth-child(2){animation-delay:1.95s;}.splash-dots span:nth-child(3){animation-delay:2.1s;}
+
+        /* App */
+        .app{width:100%;max-width:480px;padding:0 20px 120px;position:relative;z-index:1;opacity:0;animation:fadeIn .5s ease-out 3.2s forwards;}
+
+        /* Top Bar */
+        .top-bar{display:flex;justify-content:space-between;align-items:center;padding:18px 0 12px;}
+        .school-badge{display:flex;align-items:center;gap:10px;}
+        .snhs-logo{width:38px;height:46px;flex-shrink:0;}
+        .school-name{font-family:'Cinzel',serif;font-size:1rem;color:var(--green-700);font-weight:700;letter-spacing:.04em;}
+        [data-theme="dark"] .school-name{color:var(--green-300);}
+        .top-actions{display:flex;gap:8px;}
+        .icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:transform .15s,box-shadow .15s;}
+        .icon-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px var(--shadow-sm);}
+        .icon-btn:active{transform:scale(.92);}
+
+        /* Hero */
+        .hero-card{background:linear-gradient(135deg,var(--green-700),var(--green-900));border-radius:22px;padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:0 16px 48px rgba(46,125,50,.2);}
+        .hero-card::before{content:'';position:absolute;top:-40%;right:-15%;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.06);}
+        .hero-card::after{content:'';position:absolute;bottom:-25%;left:-8%;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.04);}
+        .hero-top{display:flex;align-items:center;gap:16px;margin-bottom:16px;position:relative;z-index:1;}
+        .hero-crest{width:56px;height:68px;flex-shrink:0;filter:brightness(0) invert(1);opacity:.85;}
+        .hero-titles .hero-eyebrow{font-size:.65rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.2em;margin-bottom:4px;}
+        .hero-titles .hero-name{font-family:'Cinzel',serif;font-size:1.5rem;color:#fff;font-weight:900;letter-spacing:.06em;line-height:1.1;}
+        .hero-titles .hero-motto-text{font-family:'Cinzel',serif;font-size:.55rem;color:rgba(255,255,255,.4);letter-spacing:.15em;text-transform:uppercase;margin-top:2px;}
+        .hero-sub{font-size:.85rem;color:rgba(255,255,255,.6);position:relative;z-index:1;margin-bottom:18px;}
+        .hero-teacher{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
+        .teacher-avatar{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+        .teacher-info h4{color:#fff;font-size:.9rem;font-weight:600;}
+        .teacher-info p{color:rgba(255,255,255,.5);font-size:.72rem;}
+
+        /* Stats */
+        .quick-stats{display:flex;gap:10px;margin-bottom:28px;}
+        .q-stat{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;transition:transform .2s;}
+        .q-stat:hover{transform:translateY(-2px);}
+        .q-stat .q-num{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:1.4rem;color:var(--green-700);display:block;}
+        [data-theme="dark"] .q-stat .q-num{color:var(--green-300);}
+        .q-stat .q-label{font-size:.62rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+
+        .section-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;}
+        .section-header h2{font-family:'DM Serif Display',serif;font-size:1.2rem;}
+        .section-header .count{font-size:.72rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;}
+
+        /* Subject Grid */
+        .subject-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
+        .subject-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 16px;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;animation:cardIn .35s ease-out both;}
+        .subject-card:nth-child(1){animation-delay:.04s;}.subject-card:nth-child(2){animation-delay:.08s;}.subject-card:nth-child(3){animation-delay:.12s;}.subject-card:nth-child(4){animation-delay:.16s;}.subject-card:nth-child(5){animation-delay:.2s;}.subject-card:nth-child(6){animation-delay:.24s;}
+        .subject-card:hover{transform:translateY(-4px);box-shadow:0 10px 30px var(--shadow-sm);}
+        .subject-card:active{transform:scale(.97);}
+        .subject-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+        .subject-card[data-subject="maths"]::before{background:linear-gradient(90deg,#FF6B35,#FF9800);}
+        .subject-card[data-subject="english"]::before{background:linear-gradient(90deg,#1565C0,#42A5F5);}
+        .subject-card[data-subject="economics"]::before{background:linear-gradient(90deg,#6A1B9A,#AB47BC);}
+        .subject-card[data-subject="business"]::before{background:linear-gradient(90deg,#00838F,#26C6DA);}
+        .subject-card[data-subject="history"]::before{background:linear-gradient(90deg,#795548,#A1887F);}
+        .subject-card[data-subject="zulu"]::before{background:linear-gradient(90deg,#C62828,#EF5350);}
+        .subject-card[data-subject="tonga"]::before{background:linear-gradient(90deg,#EF6C00,#FFB74D);}
+        .subject-card[data-subject="chivenda"]::before{background:linear-gradient(90deg,#2E7D32,#66BB6A);}
+        .subject-card[data-subject="sesotho"]::before{background:linear-gradient(90deg,#AD1457,#EC407A);}
+        .subject-card[data-subject="life-orientation"]::before{background:linear-gradient(90deg,#00695C,#26A69A);}
+        .sc-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:12px;}
+        .subject-card[data-subject="maths"] .sc-icon{background:#FFF3E0;}
+        .subject-card[data-subject="english"] .sc-icon{background:#E3F2FD;}
+        .subject-card[data-subject="economics"] .sc-icon{background:#F3E5F5;}
+        .subject-card[data-subject="business"] .sc-icon{background:#E0F7FA;}
+        .subject-card[data-subject="history"] .sc-icon{background:#EFEBE9;}
+        .subject-card[data-subject="zulu"] .sc-icon{background:#FFEBEE;}
+        .subject-card[data-subject="tonga"] .sc-icon{background:#FFF8E1;}
+        .subject-card[data-subject="chivenda"] .sc-icon{background:#E8F5E9;}
+        .subject-card[data-subject="sesotho"] .sc-icon{background:#FCE4EC;}
+        .subject-card[data-subject="life-orientation"] .sc-icon{background:#E0F2F1;}
+        [data-theme="dark"] .sc-icon{background:var(--bg-alt) !important;}
+        .sc-name{font-weight:700;font-size:.82rem;margin-bottom:3px;}
+        .sc-topics{font-size:.68rem;color:var(--text-muted);}
+        .lang-label{display:inline-block;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:3px 8px;border-radius:6px;background:var(--green-100);color:var(--green-700);margin-bottom:14px;}
+        [data-theme="dark"] .lang-label{background:rgba(46,125,50,.15);color:var(--green-300);}
+
+        /* Detail */
+        .detail-overlay{position:fixed;inset:0;z-index:3000;background:var(--bg);transform:translateX(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);overflow-y:auto;-webkit-overflow-scrolling:touch;}
+        .detail-overlay.open{transform:translateX(0);}
+        .detail-inner{max-width:480px;margin:0 auto;padding:0 20px 40px;}
+        .detail-top{display:flex;align-items:center;gap:14px;padding:20px 0 16px;}
+        .detail-back{width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:transform .15s;flex-shrink:0;}
+        .detail-back:active{transform:scale(.92);}
+        .detail-icon{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+        .detail-icon.maths{background:#FFF3E0;}.detail-icon.english{background:#E3F2FD;}.detail-icon.economics{background:#F3E5F5;}.detail-icon.business{background:#E0F7FA;}.detail-icon.history{background:#EFEBE9;}.detail-icon.zulu{background:#FFEBEE;}.detail-icon.tonga{background:#FFF8E1;}.detail-icon.chivenda{background:#E8F5E9;}.detail-icon.sesotho{background:#FCE4EC;}.detail-icon.life-orientation{background:#E0F2F1;}
+        [data-theme="dark"] .detail-icon{background:var(--bg-alt) !important;}
+        .detail-title-area h2{font-family:'DM Serif Display',serif;font-size:1.4rem;}
+        .detail-title-area p{font-size:.75rem;color:var(--text-muted);}
+        .topic-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:10px;cursor:pointer;transition:all .2s;animation:cardIn .3s ease-out both;}
+        .topic-card:hover{transform:translateX(4px);box-shadow:0 4px 16px var(--shadow-sm);}
+        .topic-card.active{border-color:var(--green-500);}
+        .tc-head{display:flex;justify-content:space-between;align-items:center;}
+        .tc-head h4{font-size:.9rem;font-weight:600;}
+        .tc-chevron{color:var(--text-muted);font-size:.8rem;transition:transform .2s;}
+        .topic-card.active .tc-chevron{transform:rotate(90deg);color:var(--green-500);}
+        .tc-body{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;}
+        .topic-card.active .tc-body{max-height:600px;padding-top:12px;}
+        .tc-body p{font-size:.84rem;color:var(--text-secondary);line-height:1.65;margin-bottom:10px;}
+        .tc-body ul{list-style:none;padding:0;}
+        .tc-body ul li{font-size:.82rem;color:var(--text-secondary);padding:6px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+        .tc-body ul li:last-child{border-bottom:none;}
+        .tc-body ul li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green-500);flex-shrink:0;}
+
+        /* Schedule */
+        .schedule-day-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:12px;}
+        .schedule-day-card.today{border-color:var(--green-500);box-shadow:0 0 0 1px var(--green-500);}
+        .sd-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+        .sd-header h3{font-family:'DM Serif Display',serif;font-size:1.05rem;}
+        .sd-badge{font-size:.6rem;background:var(--green-500);color:#fff;padding:2px 8px;border-radius:6px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+        .sd-period{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);}
+        .sd-period:last-child{border-bottom:none;}
+        .sd-time{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--text-muted);width:58px;flex-shrink:0;text-align:right;}
+        .sd-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+        .sd-subject{font-size:.85rem;font-weight:500;}
+        .sd-subject.lunch{color:var(--text-muted);font-style:italic;font-weight:400;}
+        .sd-subject.after{color:var(--green-500);}
+
+        /* Notes Page */
+        .notes-toolbar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+        .notes-filter{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+        .notes-filter.active{background:var(--green-700);color:#fff;border-color:transparent;}
+        .notes-filter:not(.active):hover{border-color:var(--green-500);color:var(--green-700);}
+
+        .note-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:10px;animation:cardIn .3s ease-out both;transition:transform .2s,box-shadow .2s;}
+        .note-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--shadow-sm);}
+        .note-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px;}
+        .note-badges{display:flex;gap:6px;flex-wrap:wrap;}
+        .note-badge{padding:2px 8px;border-radius:6px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+        .note-badge.teacher{background:#FFF3E0;color:#E65100;}
+        .note-badge.student{background:var(--green-100);color:var(--green-700);}
+        [data-theme="dark"] .note-badge.teacher{background:rgba(230,81,0,.15);}
+        [data-theme="dark"] .note-badge.student{background:rgba(46,125,50,.15);}
+        .note-subject-tag{padding:2px 8px;border-radius:6px;font-size:.6rem;font-weight:700;text-transform:uppercase;}
+        .note-title{font-weight:700;font-size:.95rem;margin-bottom:6px;}
+        .note-content{font-size:.82rem;color:var(--text-secondary);line-height:1.6;margin-bottom:10px;white-space:pre-wrap;word-break:break-word;}
+        .note-meta{font-size:.65rem;color:var(--text-muted);margin-bottom:10px;display:flex;gap:12px;}
+        .note-actions{display:flex;gap:6px;flex-wrap:wrap;}
+        .note-action-btn{padding:7px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;color:var(--text-secondary);}
+        .note-action-btn:hover{border-color:var(--green-500);color:var(--green-700);transform:translateY(-1px);}
+        .note-action-btn:active{transform:scale(.96);}
+        .note-action-btn.whatsapp{color:#25D366;border-color:#25D366;}
+        .note-action-btn.whatsapp:hover{background:#25D366;color:#fff;}
+        .note-delete-btn{background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:.75rem;padding:4px;transition:color .15s;}
+        .note-delete-btn:hover{color:#e53935;}
+
+        .notes-empty{text-align:center;padding:50px 20px;color:var(--text-muted);}
+        .notes-empty .ne-icon{font-size:3rem;margin-bottom:12px;opacity:.4;}
+        .notes-empty h3{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--text-secondary);margin-bottom:6px;}
+        .notes-empty p{font-size:.82rem;line-height:1.5;}
+
+        .note-create-btn{position:fixed;bottom:80px;right:50%;transform:translateX(50%);width:48px;height:48px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--green-500),var(--green-700));color:#fff;font-size:1.6rem;cursor:pointer;box-shadow:0 6px 24px rgba(46,125,50,.3);z-index:150;display:flex;align-items:center;justify-content:center;transition:transform .2s;line-height:1;}
+        .note-create-btn:hover{transform:translateX(50%) scale(1.1);}
+        .note-create-btn:active{transform:translateX(50%) scale(.92);}
+
+        /* Note Create Modal */
+        .note-modal{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:3000;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+        .note-modal.open{opacity:1;pointer-events:all;}
+        .note-modal-sheet{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:24px 22px 36px;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1);max-height:85vh;overflow-y:auto;}
+        .note-modal.open .note-modal-sheet{transform:translateY(0);}
+        .modal-handle{width:32px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px;}
+        .note-modal-sheet h3{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:18px;}
+        .form-group{margin-bottom:14px;}
+        .form-group label{display:block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:6px;}
+        .form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--text-primary);transition:border-color .2s;outline:none;-webkit-appearance:none;}
+        .form-group textarea{min-height:140px;resize:vertical;line-height:1.5;}
+        .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green-500);box-shadow:0 0 0 3px rgba(76,175,80,.1);}
+        .form-row{display:flex;gap:10px;}
+        .form-row .form-group{flex:1;}
+        .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;}
+        .toggle-row span{font-size:.85rem;font-weight:500;}
+        .toggle{width:44px;height:24px;border-radius:12px;background:var(--border);border:none;cursor:pointer;position:relative;transition:background .2s;}
+        .toggle.on{background:var(--green-500);}
+        .toggle::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+        .toggle.on::after{transform:translateX(20px);}
+        .submit-btn{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--green-500),var(--green-700));color:#fff;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:6px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 18px rgba(46,125,50,.3);}
+        .submit-btn:hover{transform:translateY(-1px);}
+        .submit-btn:active{transform:scale(.98);}
+
+        /* QR Modal */
+        .qr-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);z-index:4000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+        .qr-modal.open{opacity:1;pointer-events:all;}
+        .qr-box{background:var(--surface);border-radius:20px;padding:28px;text-align:center;max-width:300px;width:90%;animation:cardIn .3s ease-out;}
+        .qr-box h3{font-family:'DM Serif Display',serif;margin-bottom:6px;}
+        .qr-box p{font-size:.75rem;color:var(--text-muted);margin-bottom:16px;}
+        .qr-box img{border-radius:12px;margin-bottom:16px;}
+        .qr-box button{padding:10px 24px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.85rem;transition:transform .15s;}
+        .qr-box button:active{transform:scale(.96);}
+
+        /* About */
+        .about-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 20px;margin-bottom:16px;}
+        .about-card h3{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:14px;color:var(--green-700);}
+        [data-theme="dark"] .about-card h3{color:var(--green-300);}
+        .about-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+        .about-row:last-child{border-bottom:none;}
+        .about-emoji{width:36px;height:36px;border-radius:10px;background:var(--green-100);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+        [data-theme="dark"] .about-emoji{background:rgba(46,125,50,.12);}
+        .about-info h4{font-size:.85rem;font-weight:600;}
+        .about-info p{font-size:.72rem;color:var(--text-muted);}
+
+        /* Tabs */
+        .nav-tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:200;padding:8px 0 max(8px,env(safe-area-inset-bottom));box-shadow:0 -4px 20px var(--shadow-sm);}
+        .nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;border:none;background:none;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--text-muted);font-size:.62rem;font-weight:500;transition:color .2s;}
+        .nav-tab .tab-icon{font-size:1.2rem;transition:transform .2s;}
+        .nav-tab.active{color:var(--green-700);}
+        [data-theme="dark"] .nav-tab.active{color:var(--green-300);}
+        .nav-tab.active .tab-icon{transform:scale(1.1);}
+        .page{display:none;}.page.active{display:block;}
+
+        .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--green-900);color:#fff;padding:10px 22px;border-radius:28px;font-size:.82rem;font-weight:500;z-index:5000;opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;}
+        .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+        @keyframes badgeIn{to{opacity:1;transform:scale(1) rotate(0);}}
+        @keyframes slideUp{to{opacity:1;transform:translateY(0);}}
+        @keyframes fadeIn{to{opacity:1;}}
+        @keyframes splashOut{to{opacity:0;visibility:hidden;pointer-events:none;}}
+        @keyframes dotPop{0%{opacity:0;transform:scale(0);}60%{opacity:1;transform:scale(1.4);}100%{opacity:1;transform:scale(1);}}
+        @keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+        @media(min-width:500px){.nav-tabs{right:calc(50% - 240px);left:auto;width:480px;transform:none;}.note-create-btn{right:calc(50% - 240px + 20px);transform:none;}.note-create-btn:hover{transform:scale(1.1);}.note-create-btn:active{transform:scale(.92);}}
+    </style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div id="splash-screen">
+    <div class="splash-crest"><svg viewBox="0 0 100 130" fill="none"><path d="M50 5 L90 25 L90 80 Q90 110 50 125 Q10 110 10 80 L10 25 Z" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.6)" stroke-width="2"/><path d="M50 18 L78 33 L78 75 Q78 98 50 110 Q22 98 22 75 L22 33 Z" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.3)" stroke-width="1"/><text x="50" y="58" text-anchor="middle" font-family="Cinzel,serif" font-weight="900" font-size="22" fill="white" letter-spacing="3">S.N.H.S.</text><line x1="28" y1="68" x2="72" y2="68" stroke="rgba(255,255,255,.3)" stroke-width=".8"/><text x="50" y="82" text-anchor="middle" font-family="Cinzel,serif" font-weight="400" font-size="6" fill="rgba(255,255,255,.55)" letter-spacing="2.5">PROPOSITUM VERITATE</text><circle cx="50" cy="100" r="6" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1"/><path d="M47 100 L50 96 L53 100 M50 96 L50 104" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linecap="round"/></svg></div>
+    <h1 class="splash-title">S.N.H.S.</h1>
+    <p class="splash-motto">Propositum Veritate</p>
+    <p class="splash-class">Grade 11D · 2026</p>
+    <div class="splash-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- Detail Overlay -->
+<div class="detail-overlay" id="detailOverlay">
+    <div class="detail-inner">
+        <div class="detail-top">
+            <button class="detail-back" id="detailBack">←</button>
+            <div class="detail-icon" id="detailIcon"></div>
+            <div class="detail-title-area"><h2 id="detailTitle"></h2><p id="detailSub"></p></div>
+        </div>
+        <div id="detailContent"></div>
+    </div>
+</div>
+
+<!-- QR Modal -->
+<div class="qr-modal" id="qrModal">
+    <div class="qr-box">
+        <h3>Scan to Get Notes</h3>
+        <p id="qrLabel"></p>
+        <img id="qrImage" width="200" height="200" alt="QR Code">
+        <br><button onclick="document.getElementById('qrModal').classList.remove('open')">Close</button>
+    </div>
+</div>
+
+<!-- Note Create Modal -->
+<div class="note-modal" id="noteModal">
+    <div class="note-modal-sheet">
+        <div class="modal-handle"></div>
+        <h3>Create Note</h3>
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="noteTitle" placeholder="e.g. Chapter 3 Summary" maxlength="80" autocomplete="off">
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Subject</label>
+                <select id="noteSubject">
+                    <option value="maths">Maths Literacy</option>
+                    <option value="english">English</option>
+                    <option value="economics">Economics</option>
+                    <option value="business">Business Studies</option>
+                    <option value="history">History</option>
+                    <option value="life-orientation">Life Orientation</option>
+                    <option value="zulu">isiZulu</option>
+                    <option value="tonga">XiTonga</option>
+                    <option value="chivenda">TshiVenda</option>
+                    <option value="sesotho">Sesotho</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Notes</label>
+            <textarea id="noteContent" placeholder="Type or paste your notes here...&#10;&#10;You can include key points, definitions, formulas, etc."></textarea>
+        </div>
+        <div class="toggle-row">
+            <span>Teacher's note</span>
+            <button class="toggle" id="noteTeacherToggle"></button>
+        </div>
+        <button class="submit-btn" id="noteSubmit">Save & Share</button>
+    </div>
+</div>
+
+<!-- App -->
+<div class="app" id="app">
+
+    <!-- Home -->
+    <div class="page active" id="pageHome">
+        <div class="top-bar">
+            <div class="school-badge">
+                <svg class="snhs-logo" viewBox="0 0 100 130" fill="none"><path d="M50 5 L90 25 L90 80 Q90 110 50 125 Q10 110 10 80 L10 25 Z" fill="var(--green-100)" stroke="var(--green-500)" stroke-width="2.5"/><path d="M50 18 L78 33 L78 75 Q78 98 50 110 Q22 98 22 75 L22 33 Z" fill="var(--green-500)" opacity=".08" stroke="var(--green-300)" stroke-width="1"/><text x="50" y="58" text-anchor="middle" font-family="Cinzel,serif" font-weight="900" font-size="22" fill="var(--green-700)" letter-spacing="3">S.N.H.S.</text><line x1="28" y1="68" x2="72" y2="68" stroke="var(--green-300)" stroke-width=".8"/><text x="50" y="82" text-anchor="middle" font-family="Cinzel,serif" font-weight="400" font-size="6" fill="var(--green-700)" letter-spacing="2.5" opacity=".7">PROPOSITUM VERITATE</text></svg>
+                <span class="school-name">S.N.H.S.</span>
+            </div>
+            <div class="top-actions"><button class="icon-btn" id="themeBtn">🌙</button></div>
+        </div>
+
+        <div class="hero-card">
+            <div class="hero-top">
+                <svg class="hero-crest" viewBox="0 0 100 130" fill="none"><path d="M50 5 L90 25 L90 80 Q90 110 50 125 Q10 110 10 80 L10 25 Z" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.6)" stroke-width="2"/><path d="M50 18 L78 33 L78 75 Q78 98 50 110 Q22 98 22 75 L22 33 Z" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.3)" stroke-width="1"/><text x="50" y="58" text-anchor="middle" font-family="Cinzel,serif" font-weight="900" font-size="22" fill="white" letter-spacing="3">S.N.H.S.</text><line x1="28" y1="68" x2="72" y2="68" stroke="rgba(255,255,255,.3)" stroke-width=".8"/><text x="50" y="82" text-anchor="middle" font-family="Cinzel,serif" font-weight="400" font-size="6" fill="rgba(255,255,255,.55)" letter-spacing="2.5">PROPOSITUM VERITATE</text></svg>
+                <div class="hero-titles">
+                    <div class="hero-eyebrow">Sekano Ntoane · Class of 2026</div>
+                    <div class="hero-name">Grade 11D</div>
+                    <div class="hero-motto-text">Propositum Veritate</div>
+                </div>
+            </div>
+            <div class="hero-sub">10 Subjects · Real timetable · Share notes</div>
+            <div class="hero-teacher"><div class="teacher-avatar">👨‍🏫</div><div class="teacher-info"><h4>Mr. Vusi Thabethe</h4><p>Class Teacher</p></div></div>
+        </div>
+
+        <div class="quick-stats">
+            <div class="q-stat"><span class="q-num">10</span><div class="q-label">Subjects</div></div>
+            <div class="q-stat"><span class="q-num">4</span><div class="q-label">Languages</div></div>
+            <div class="q-stat"><span class="q-num" id="notesCount">0</span><div class="q-label">Notes</div></div>
+        </div>
+
+        <div class="section-header"><h2>Core Subjects</h2><span class="count">6 subjects</span></div>
+        <div class="subject-grid" id="coreGrid"></div>
+        <div class="section-header"><h2>Home Languages</h2><span class="count">4 languages</span></div>
+        <div class="lang-label">Choose your home language</div>
+        <div class="subject-grid" id="langGrid"></div>
+    </div>
+
+    <!-- Timetable -->
+    <div class="page" id="pageSchedule">
+        <div class="top-bar">
+            <div class="school-badge"><svg class="snhs-logo" viewBox="0 0 100 130" fill="none"><path d="M50 5 L90 25 L90 80 Q90 110 50 125 Q10 110 10 80 L10 25 Z" fill="var(--green-100)" stroke="var(--green-500)" stroke-width="2.5"/><text x="50" y="58" text-anchor="middle" font-family="Cinzel,serif" font-weight="900" font-size="22" fill="var(--green-700)" letter-spacing="3">S.N.H.S.</text></svg><span class="school-name">Timetable</span></div>
+            <div class="top-actions"><button class="icon-btn" id="themeBtn2">🌙</button></div>
+        </div>
+        <div id="scheduleContent"></div>
+    </div>
+
+    <!-- Notes -->
+    <div class="page" id="pageNotes">
+        <div class="top-bar">
+            <div class="school-badge"><svg class="snhs-logo" viewBox="0 0 100 130" fill="none"><path d="M50 5 L90 25 L90 80 Q90 110 50 125 Q10 110 10 80 L10 25 Z" fill="var(--green-100)" stroke="var(--green-500)" stroke-width="2.5"/><text x="50" y="58" text-anchor="middle" font-family="Cinzel,serif" font-weight="900" font-size="22" fill="var(--green-700)" letter-spacing="3">S.N.H.S.</text></svg><span class="school-name">Notes</span></div>
+            <div class="top-actions"><button class="icon-btn" id="themeBtn4">🌙</button></div>
+        </div>
+        <div class="notes-toolbar" id="notesToolbar"></div>
+        <div class="section-header"><h2>Shared Notes</h2><span class="count" id="notesFilterCount"></span></div>
+        <div id="notesList"></div>
+        <button class="note-create-btn" id="noteCreateBtn" title="Create note">+</button>
+    </div>
+
+    <!-- About -->
+    <div class="page" id="pageAbout">
+        <div class="top-bar">
+            <div class="school-badge"><svg class="snhs-logo" viewBox="0 0 100 130" fill="none"><path d="M50 5 L90 25 L90 80 Q90 110 50 125 Q10 110 10 80 L10 25 Z" fill="var(--green-100)" stroke="var(--green-500)" stroke-width="2.5"/><text x="50" y="58" text-anchor="middle" font-family="Cinzel,serif" font-weight="900" font-size="22" fill="var(--green-700)" letter-spacing="3">S.N.H.S.</text></svg><span class="school-name">About</span></div>
+            <div class="top-actions"><button class="icon-btn" id="themeBtn3">🌙</button></div>
+        </div>
+        <div class="about-card"><h3>School Info</h3>
+            <div class="about-row"><div class="about-emoji">🏫</div><div class="about-info"><h4>Sekano Ntoane Secondary</h4><p>School Name</p></div></div>
+            <div class="about-row"><div class="about-emoji">🏛️</div><div class="about-info"><h4>S.N.H.S.</h4><p>School Acronym</p></div></div>
+            <div class="about-row"><div class="about-emoji">📜</div><div class="about-info"><h4>Propositum Veritate</h4><p>School Motto</p></div></div>
+            <div class="about-row"><div class="about-emoji">🎓</div><div class="about-info"><h4>Grade 11D</h4><p>Class</p></div></div>
+            <div class="about-row"><div class="about-emoji">👨‍🏫</div><div class="about-info"><h4>Mr. Vusi Thabethe</h4><p>Class Teacher</p></div></div>
+        </div>
+        <div class="about-card"><h3>Creators</h3>
+            <div class="about-row"><div class="about-emoji">💻</div><div class="about-info"><h4>Bradley Mofokeng</h4><p>Lead Developer & Designer</p></div></div>
+            <div class="about-row"><div class="about-emoji">🤖</div><div class="about-info"><h4>MiMo (Xiaomi AI)</h4><p>AI Assistant & Code Partner</p></div></div>
+        </div>
+        <div class="about-card"><h3>Made With</h3>
+            <div class="about-row"><div class="about-emoji">💚</div><div class="about-info"><h4>Love for Grade 11D</h4><p>Built by Bradley & MiMo, 2026</p></div></div>
+        </div>
+    </div>
+</div>
+
+<nav class="nav-tabs">
+    <button class="nav-tab active" data-page="pageHome"><span class="tab-icon">🏠</span>Home</button>
+    <button class="nav-tab" data-page="pageSchedule"><span class="tab-icon">📅</span>Timetable</button>
+    <button class="nav-tab" data-page="pageNotes"><span class="tab-icon">📝</span>Notes</button>
+    <button class="nav-tab" data-page="pageAbout"><span class="tab-icon">ℹ️</span>About</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════ PARTICLES ═══════════
+(function(){const c=document.getElementById('particles'),ctx=c.getContext('2d');let w,h,pts=[];function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight;}function init(){pts=[];const n=Math.floor((w*h)/22000);for(let i=0;i<n;i++)pts.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2.5+1,dx:(Math.random()-0.5)*0.2,dy:(Math.random()-0.5)*0.2,o:Math.random()*0.4+0.1});}function draw(){ctx.clearRect(0,0,w,h);const dk=document.documentElement.getAttribute('data-theme')==='dark';pts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=dk?`rgba(76,175,80,${p.o*0.5})`:`rgba(46,125,50,${p.o*0.15})`;ctx.fill();});requestAnimationFrame(draw);}resize();init();draw();window.addEventListener('resize',()=>{resize();init();});})();
+
+// ═══════════ SUBJECTS ═══════════
+const subjects={maths:{name:'Maths Literacy',emoji:'📐',tagline:'Numbers in everyday life',topics:[{title:'Finance – Taxation',content:'Understanding income tax, VAT, UIF, and how to calculate tax on earnings.',items:['Income tax calculation','VAT (Value Added Tax)','Tax brackets and rebates','Tax invoices and receipts']},{title:'Finance – Banking & Interest',content:'How banks work, savings, loans, and simple vs compound interest.',items:['Simple interest: I = P × r × t','Compound interest formulas','Savings vs investment accounts','Loan repayments and budgets']},{title:'Measurement – Area & Volume',content:'Calculating measurements for real-world scenarios.',items:['Area of rectangles, triangles, circles','Volume of prisms and cylinders','Converting between units','Scale and ratio in maps']},{title:'Data Handling & Probability',content:'Collecting data, creating graphs, calculating averages, and probability.',items:['Mean, median, mode, range','Histograms and pie charts','Probability scale 0–1','Predictions from data']},{title:'Number Patterns & Functions',content:'Identifying patterns, writing rules, and understanding relationships.',items:['Linear patterns','Quadratic patterns','Function notation','Graphing relationships']}]},english:{name:'English',emoji:'📖',tagline:'Language & literature',topics:[{title:'Short Stories & Analysis',content:'Analysing short stories: plot, character, theme, setting.',items:['Plot structure & conflict','Character development','Theme and message','Narrative point of view']},{title:'Poetry',content:'Poetic devices, interpretation, and appreciation.',items:['Simile, metaphor, personification','Rhyme, rhythm, and tone','Imagery and symbolism','Analysing meaning']},{title:'Novel Study',content:'Prescribed novel: themes, characters, social context.',items:['Chapter summaries','Character analysis','Theme exploration','Essay writing']},{title:'Writing Skills',content:'Essays, letters, reports, speeches, creative writing.',items:['Formal & informal essays','Business & personal letters','Speech writing','Report writing']},{title:'Comprehension & Summary',content:'Reading passages, main ideas, inferences, summaries.',items:['Main idea identification','Inference & deduction','Summary techniques','Visual literacy']}]},economics:{name:'Economics',emoji:'📈',tagline:'How the economy works',topics:[{title:'Circular Flow Model',content:'Money movement between households, firms, government, foreign sector.',items:['The circular flow model','Injections and leakages','GDP and economic growth','The business cycle']},{title:'Government & Economy',content:'Government role, fiscal policy, budget effects.',items:['Government revenue','Government expenditure','Budget and fiscal policy','National debt']},{title:'Supply & Demand',content:'How prices are determined and markets allocate resources.',items:['Law of supply & demand','Market equilibrium','Price elasticity','Market failure']},{title:'Money & Banking',content:'Money, banking system, SARB, monetary policy.',items:['Functions of money','Types of banks in SA','SARB and monetary policy','Interest rates and inflation']},{title:'Trade & Globalisation',content:'International trade, trade agreements, SA in the global economy.',items:['Imports and exports','Trade agreements (SADC, BRICS)','Exchange rates','Globalisation effects']}]},business:{name:'Business Studies',emoji:'💼',tagline:'Entrepreneurship & management',topics:[{title:'Business Environments',content:'Macro, market, and micro environments affecting businesses.',items:['PESTLE analysis','Competitor analysis','SWOT analysis','Internal environment']},{title:'Business Ventures',content:'Starting a business, ownership types, entrepreneurship.',items:['Forms of ownership','Business plan creation','Franchising & partnerships','Entrepreneurial qualities']},{title:'Marketing',content:'Identifying customers, products, pricing, promotion.',items:['Marketing mix (4 Ps)','Market research','Advertising and promotion','Target market']},{title:'Financial Management',content:'Financial statements, budgeting, money management.',items:['Income statement','Balance sheet','Cash flow management','Break-even analysis']}]},history:{name:'History',emoji:'🏺',tagline:'Understanding the past',topics:[{title:'The Cold War (1945–1990)',content:'USA vs USSR ideological conflict, arms race, proxy wars, collapse of the Soviet Union.',items:['Capitalism vs Communism','The Arms Race','Proxy wars (Korea, Vietnam, Angola)','Fall of the Berlin Wall']},{title:'Independent Africa',content:'Decolonisation challenges: political, economic, and social.',items:['Decolonisation across Africa','Neo-colonialism','Military coups and dictatorships','Economic dependency']},{title:'Civil Rights Movements',content:'Struggles for equality worldwide, including anti-apartheid.',items:['American Civil Rights Movement','Martin Luther King Jr. & Malcolm X','Anti-apartheid resistance','Role of women in liberation']},{title:'Apartheid in South Africa',content:'Racial segregation system, key laws, resistance, transition to democracy.',items:['Key apartheid laws','1976 Soweto Uprising','Nelson Mandela and the ANC','1994 democratic elections']},{title:'Historical Sources',content:'How historians study the past: primary/secondary sources, bias.',items:['Primary vs secondary sources','Analysing bias','Oral history','Constructing arguments']}]},'life-orientation':{name:'Life Orientation',emoji:'🌱',tagline:'Life skills & growth',topics:[{title:'Study Skills & Exams',content:'Effective study methods, time management, exam prep.',items:['Study timetable creation','Mind mapping','Memory techniques','Exam strategies']},{title:'Career Planning',content:'Exploring careers, requirements, planning your future.',items:['Self-assessment','Career research','University applications','CV writing']},{title:'Health & Wellness',content:'Physical and mental health, nutrition, lifestyle choices.',items:['Balanced diet & nutrition','Exercise and fitness','Mental health awareness','Substance abuse prevention']},{title:'Human Rights & Democracy',content:'Constitution, Bill of Rights, democracy in SA.',items:['The SA Constitution','Bill of Rights','Equality and dignity','Active citizenship']},{title:'Financial Literacy',content:'Budgeting, saving, understanding debt.',items:['Personal budget','Saving strategies','Debt & credit','Consumer rights']}]},zulu:{name:'isiZulu',emoji:'🔴',tagline:'Ulimi lwasekhaya',topics:[{title:'Ukufunda Nokuqonda',content:'Reading comprehension in isiZulu.',items:['Imibuzo yokuqonda','Ukuxhumanisa amagama','Imibono eyinhloko','Izinkulumo zomlingiswa']},{title:'Inhlanganiselo',content:'Language structures in isiZulu.',items:['Izinhlobo zamagama','Isivumelwano','Izithakazelo','Izaga nezisho']},{title:'Ukubhala',content:'Writing skills: letters, reports, speeches.',items:['Incwadi yabangani','Incwadi ebucayi','Umbiko','Inkulumo']},{title:'Izinkondlo',content:'Poetry analysis in isiZulu.',items:['Uhlobo lwenkondlo','Amagama anomsindo','Izithombe zolimi','Ukuhlaziywa kwenkondlo']}]},tonga:{name:'XiTonga',emoji:'🟠',tagline:'Ririmi ra le kaya',topics:[{title:'Kuvereka',content:'Reading and comprehension in XiTonga.',items:['Mivumbiwa ya ku🇽a','Ku🇽uma tinhlanu','Mintirho ya nkoka','Vuxaka bya va🇽aki']},{title:'Vuxaka bya Ririmi',content:'Language structures in XiTonga.',items:['Mintlhavu ya marito','Ku🇽uma kwa marito','Mafambiselo','Tivulwa']},{title:'Kusembeta',content:'Writing skills in XiTonga.',items:['Bukwembeti bya munghana','Malembelo ya ntolovelo','Xivulwa','Nhlamuselo']}]},chivenda:{name:'TshiVenda',emoji:'🟢',tagline:'Luambo lwa haya',topics:[{title:'U\uD806\uDFE8ela na u\uD806\uDFDAisisa',content:'Reading and comprehension in TshiVenda.',items:['Mafhungo a u\uD806\uDFDAisisa','U\uD806\uDFE8ana ha mafhungo','M\uD806\uDFE8imo a nkulwane','U\uD806\uDFDAola z\uD806\uDFE8ivhadzwa']},{title:'Ma\uD806\uDFDAulelele a Luambo',content:'Language structures in TshiVenda.',items:['Ma\uD806\uDFDAalo a ma\uD806\uDFEABa','U\uD806\uDFE8ana ha ma\uD806\uDFEABa','Z\uD806\uDFE8ivhadzwa','M\uD806\uDFE8ambo']},{title:'U\uD806\uDFE8a\uD806\uDFD2a',content:'Writing skills in TshiVenda.',items:['\u1E3Bi\uD806\uDFE8ep\uD806\uDFD2a ya mun\uD806\uDFE8ani','U\uD806\uDFE8a\uD806\uDFD2a ha mip\uD806\uDFE8afhudziso','M\uD806\uDFE8ambo','U\uD806\uDFDAola ha mafhungo']}]},sesotho:{name:'Sesotho',emoji:'🩷',tagline:'Puo ya lapeng',topics:[{title:'Ho Bala le ho Utloisisa',content:'Reading and comprehension in Sesotho.',items:['Lipotso tsa utloisiso','Kopanyo ya mantsoe','Menahano e kgolo','Tlhahlobo ya baeti']},{title:'Sebopego sa Puo',content:'Language structures in Sesotho.',items:['Mabitso a metso','Tsoanelo ya puo','Maele le lithothokiso','Lipolotelo']},{title:'Ho Ngola',content:'Writing skills in Sesotho.',items:['Lengwalo la motswalle','Lengwalo la khoebo','Pego','Tlhaloso']},{title:'Pina',content:'Poetry in Sesotho.',items:['Mefuta ya pina','Mantsoe a molumo','Diswantsho tsa puo','Tlhahlobo ya pina']}]}};
+
+const coreSubjects=['maths','english','economics','business','history','life-orientation'];
+const langSubjects=['zulu','tonga','chivenda','sesotho'];
+
+// Subject colors for notes
+const subjectColors={maths:{bg:'#FFF3E0',text:'#E65100'},english:{bg:'#E3F2FD',text:'#1565C0'},economics:{bg:'#F3E5F5',text:'#6A1B9A'},business:{bg:'#E0F7FA',text:'#00838F'},history:{bg:'#EFEBE9',text:'#795548'},'life-orientation':{bg:'#E0F2F1',text:'#00695C'},zulu:{bg:'#FFEBEE',text:'#C62828'},tonga:{bg:'#FFF8E1',text:'#EF6C00'},chivenda:{bg:'#E8F5E9',text:'#2E7D32'},sesotho:{bg:'#FCE4EC',text:'#AD1457'}};
+[function(){for(const k in subjectColors){if(document.documentElement.getAttribute('data-theme')==='dark'){subjectColors[k].bg='var(--bg-alt)';}}}][0]();
+
+function renderSubjectGrid(id,keys){document.getElementById(id).innerHTML=keys.map(k=>`<div class="subject-card" data-subject="${k}" onclick="openSubject('${k}')"><div class="sc-icon">${subjects[k].emoji}</div><div class="sc-name">${subjects[k].name}</div><div class="sc-topics">${subjects[k].topics.length} topics</div></div>`).join('');}
+renderSubjectGrid('coreGrid',coreSubjects);renderSubjectGrid('langGrid',langSubjects);
+
+// ═══════════ DETAIL ═══════════
+function openSubject(key){const s=subjects[key];document.getElementById('detailIcon').className=`detail-icon ${key}`;document.getElementById('detailIcon').innerHTML=s.emoji;document.getElementById('detailTitle').textContent=s.name;document.getElementById('detailSub').textContent=`${s.tagline} · ${s.topics.length} topics`;document.getElementById('detailContent').innerHTML=s.topics.map(t=>`<div class="topic-card" onclick="this.classList.toggle('active')"><div class="tc-head"><h4>${t.title}</h4><span class="tc-chevron">›</span></div><div class="tc-body"><p>${t.content}</p><ul>${t.items.map(i=>`<li>${i}</li>`).join('')}</ul></div></div>`).join('');document.getElementById('detailOverlay').classList.add('open');document.getElementById('detailOverlay').scrollTop=0;}
+document.getElementById('detailBack').addEventListener('click',()=>document.getElementById('detailOverlay').classList.remove('open'));
+
+// ═══════════ SCHEDULE ═══════════
+const schedule=[{day:'Monday',periods:[{time:'8:00 AM',subject:'English',color:'#1565C0'},{time:'9:00 AM',subject:'Economics',color:'#6A1B9A'},{time:'10:00 AM',subject:'History',color:'#795548'},{time:'11:00 AM',subject:'Lunch',color:'#999',special:'lunch'},{time:'12:00 PM',subject:'Business Studies',color:'#00838F'},{time:'1:00 PM',subject:'Maths Literacy',color:'#FF6B35'},{time:'2:00 PM',subject:'Home Language',color:'#2E7D32'}]},{day:'Tuesday',periods:[{time:'8:00 AM',subject:'English',color:'#1565C0'},{time:'9:00 AM',subject:'History',color:'#795548'},{time:'10:00 AM',subject:'Business Studies',color:'#00838F'},{time:'11:00 AM',subject:'Lunch',color:'#999',special:'lunch'},{time:'12:00 PM',subject:'Maths Literacy',color:'#FF6B35'},{time:'1:00 PM',subject:'Home Language',color:'#2E7D32'},{time:'2:00 PM',subject:'Economics',color:'#6A1B9A'},{time:'3:00 PM',subject:'After School',color:'#4CAF50',special:'after'}]},{day:'Wednesday',periods:[{time:'8:00 AM',subject:'Maths Literacy',color:'#FF6B35'},{time:'9:00 AM',subject:'English',color:'#1565C0'},{time:'10:00 AM',subject:'Economics',color:'#6A1B9A'},{time:'11:00 AM',subject:'Lunch',color:'#999',special:'lunch'},{time:'12:00 PM',subject:'Home Language',color:'#2E7D32'},{time:'1:00 PM',subject:'History',color:'#795548'},{time:'2:00 PM',subject:'After School',color:'#4CAF50',special:'after'}]},{day:'Thursday',periods:[{time:'8:00 AM',subject:'Maths Literacy',color:'#FF6B35'},{time:'9:00 AM',subject:'English',color:'#1565C0'},{time:'10:00 AM',subject:'Life Orientation',color:'#00695C'},{time:'11:00 AM',subject:'Lunch',color:'#999',special:'lunch'},{time:'12:00 PM',subject:'Business Studies',color:'#00838F'},{time:'1:00 PM',subject:'History',color:'#795548'},{time:'2:00 PM',subject:'Home Language',color:'#2E7D32'},{time:'3:00 PM',subject:'After School',color:'#4CAF50',special:'after'}]},{day:'1st Friday',periods:[{time:'8:00 AM',subject:'Life Orientation',color:'#00695C'},{time:'9:00 AM',subject:'Maths Literacy',color:'#FF6B35'},{time:'10:00 AM',subject:'Economics',color:'#6A1B9A'},{time:'11:00 AM',subject:'Lunch',color:'#999',special:'lunch'},{time:'12:00 PM',subject:'After School',color:'#4CAF50',special:'after'}]},{day:'2nd Friday',periods:[{time:'8:00 AM',subject:'Business Studies',color:'#00838F'},{time:'9:00 AM',subject:'English',color:'#1565C0'},{time:'10:00 AM',subject:'Home Language',color:'#2E7D32'},{time:'11:00 AM',subject:'Lunch',color:'#999',special:'lunch'},{time:'12:00 PM',subject:'After School',color:'#4CAF50',special:'after'}]}];
+const now=new Date(),currentDay=now.getDay(),dayNames=['','Monday','Tuesday','Wednesday','Thursday','Friday'],todayName=dayNames[currentDay]||'',weekNum=Math.floor((now-new Date(now.getFullYear(),0,1))/(7*24*60*60*1000)),isSecondFriday=weekNum%2===0;
+function isToday(d){if(d===todayName)return true;if(todayName==='Friday'){if(d==='1st Friday'&&!isSecondFriday)return true;if(d==='2nd Friday'&&isSecondFriday)return true;}return false;}
+document.getElementById('scheduleContent').innerHTML=`<div class="section-header" style="margin-top:8px"><h2>Weekly Timetable</h2><span class="count">Mon – Fri</span></div>`+schedule.map(d=>`<div class="schedule-day-card ${isToday(d.day)?'today':''}"><div class="sd-header"><h3>${d.day}</h3>${isToday(d.day)?'<span class="sd-badge">Today</span>':''}</div>${d.periods.map(p=>`<div class="sd-period"><span class="sd-time">${p.time}</span><span class="sd-dot" style="background:${p.color}"></span><span class="sd-subject ${p.special||''}">${p.subject}</span></div>`).join('')}</div>`).join('');
+
+// ═══════════ NOTES SYSTEM ═══════════
+const NOTES_KEY='snhs_notes';
+function loadNotes(){try{return JSON.parse(localStorage.getItem(NOTES_KEY))||[];}catch{return[];}}
+function saveNotes(n){localStorage.setItem(NOTES_KEY,JSON.stringify(n));}
+let notes=loadNotes(),notesFilter='all',isTeacherNote=false;
+
+function renderNotes(){
+    const filtered=notesFilter==='all'?notes:notes.filter(n=>n.subject===notesFilter);
+    document.getElementById('notesFilterCount').textContent=`${filtered.length} note${filtered.length!==1?'s':''}`;
+    document.getElementById('notesCount').textContent=notes.length;
+
+    // Toolbar
+    const allBtns=['all',...Object.keys(subjects)];
+    const names={all:'All',maths:'Maths',english:'English',economics:'Econ',business:'Business',history:'History','life-orientation':'LO',zulu:'Zulu',tonga:'Tonga',chivenda:'Venda',sesotho:'Sotho'};
+    document.getElementById('notesToolbar').innerHTML=allBtns.map(k=>`<button class="notes-filter ${notesFilter===k?'active':''}" onclick="setNotesFilter('${k}')">${names[k]||k}</button>`).join('');
+
+    if(!filtered.length){
+        document.getElementById('notesList').innerHTML=`<div class="notes-empty"><div class="ne-icon">📝</div><h3>No notes yet</h3><p>Tap <strong>+</strong> to create a note<br>and share it with your class</p></div>`;
+        return;
+    }
+
+    const sorted=[...filtered].sort((a,b)=>b.timestamp-a.timestamp);
+    document.getElementById('notesList').innerHTML=sorted.map((n,i)=>{
+        const sc=subjectColors[n.subject]||{bg:'var(--green-100)',text:'var(--green-700)'};
+        const sName=subjects[n.subject]?.name||n.subject;
+        const timeStr=new Date(n.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+        const contentPreview=n.content.length>200?n.content.slice(0,200)+'...':n.content;
+        return`<div class="note-card" style="animation-delay:${i*0.04}s">
+            <div class="note-header">
+                <div class="note-badges">
+                    <span class="note-subject-tag" style="background:${sc.bg};color:${sc.text}">${sName}</span>
+                    <span class="note-badge ${n.isTeacher?'teacher':'student'}">${n.isTeacher?'Teacher':'Student'}</span>
+                </div>
+                <button class="note-delete-btn" onclick="deleteNote('${n.id}')" title="Delete">✕</button>
+            </div>
+            <div class="note-title">${esc(n.title)}</div>
+            <div class="note-content">${esc(contentPreview)}</div>
+            <div class="note-meta"><span>${n.author||'Anonymous'}</span><span>${timeStr}</span></div>
+            <div class="note-actions">
+                <button class="note-action-btn whatsapp" onclick="shareWhatsApp('${n.id}')">📲 WhatsApp</button>
+                <button class="note-action-btn" onclick="copyNote('${n.id}')">📋 Copy</button>
+                <button class="note-action-btn" onclick="downloadNote('${n.id}')">⬇️ Save</button>
+                <button class="note-action-btn" onclick="showQR('${n.id}')">📷 QR</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+function setNotesFilter(f){notesFilter=f;renderNotes();}
+
+function deleteNote(id){
+    notes=notes.filter(n=>n.id!==id);
+    saveNotes(notes);renderNotes();
+    showToast('Note deleted');
+}
+
+function shareWhatsApp(id){
+    const n=notes.find(x=>x.id===id);if(!n)return;
+    const sName=subjects[n.subject]?.name||n.subject;
+    const text=`📝 *${n.title}*\n📚 ${sName}\n${n.isTeacher?'👨‍🏫 Teacher Note':'👤 Student Note'}\n\n${n.content}\n\n— Shared from S.N.H.S. Grade 11D App`;
+    const url=`https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url,'_blank');
+}
+
+function copyNote(id){
+    const n=notes.find(x=>x.id===id);if(!n)return;
+    const sName=subjects[n.subject]?.name||n.subject;
+    const text=`${n.title}\n${sName} | ${n.isTeacher?'Teacher Note':'Student Note'}\n\n${n.content}\n\n— S.N.H.S. Grade 11D`;
+    navigator.clipboard.writeText(text).then(()=>showToast('Copied to clipboard')).catch(()=>{
+        // Fallback
+        const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+        showToast('Copied to clipboard');
+    });
+}
+
+function downloadNote(id){
+    const n=notes.find(x=>x.id===id);if(!n)return;
+    const sName=subjects[n.subject]?.name||n.subject;
+    const text=`${n.title}\n${sName} | ${n.isTeacher?'Teacher Note':'Student Note'}\nCreated: ${new Date(n.timestamp).toLocaleString()}\n\n${n.content}\n\n— Shared from S.N.H.S. Grade 11D`;
+    const blob=new Blob([text],{type:'text/plain'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download=`${n.title.replace(/[^a-z0-9]/gi,'_')}.txt`;
+    a.click();URL.revokeObjectURL(a.href);
+    showToast('File downloaded');
+}
+
+function showQR(id){
+    const n=notes.find(x=>x.id===id);if(!n)return;
+    const sName=subjects[n.subject]?.name||n.subject;
+    const text=`${n.title} | ${sName}\n${n.content}`;
+    const encoded=encodeURIComponent(text);
+    // Use free QR API
+    const qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encoded}&bgcolor=f4f9f4&color=1b5e20&format=svg`;
+    document.getElementById('qrImage').src=qrUrl;
+    document.getElementById('qrLabel').textContent=`${n.title} — ${sName}`;
+    document.getElementById('qrModal').classList.add('open');
+}
+
+document.getElementById('qrModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+
+// Note creation
+document.getElementById('noteCreateBtn').addEventListener('click',()=>{
+    document.getElementById('noteModal').classList.add('open');
+    setTimeout(()=>document.getElementById('noteTitle').focus(),400);
+});
+
+document.getElementById('noteTeacherToggle').addEventListener('click',function(){
+    isTeacherNote=!isTeacherNote;
+    this.classList.toggle('on',isTeacherNote);
+});
+
+document.getElementById('noteSubmit').addEventListener('click',()=>{
+    const title=document.getElementById('noteTitle').value.trim();
+    const content=document.getElementById('noteContent').value.trim();
+    const subject=document.getElementById('noteSubject').value;
+    if(!title){showToast('Enter a title');return;}
+    if(!content){showToast('Enter some notes');return;}
+
+    const note={
+        id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+        title,content,subject,
+        isTeacher:isTeacherNote,
+        author:isTeacherNote?'Mr. Thabethe':'Grade 11D Student',
+        timestamp:Date.now()
+    };
+    notes.unshift(note);saveNotes(notes);
+    document.getElementById('noteTitle').value='';
+    document.getElementById('noteContent').value='';
+    document.getElementById('noteTeacherToggle').classList.remove('on');
+    isTeacherNote=false;
+    document.getElementById('noteModal').classList.remove('open');
+    renderNotes();showToast('Note created! Share it now.');
+});
+
+document.getElementById('noteModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+
+// ═══════════ THEME ═══════════
+const THEME_KEY='snhs_grade11d_theme';
+function initTheme(){const s=localStorage.getItem(THEME_KEY)||'light';document.documentElement.setAttribute('data-theme',s);document.querySelectorAll('[id^="themeBtn"]').forEach(b=>b.textContent=s==='dark'?'☀️':'🌙');}
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem(THEME_KEY,n);document.querySelectorAll('[id^="themeBtn"]').forEach(b=>b.textContent=n==='dark'?'☀️':'🌙');}
+document.querySelectorAll('[id^="themeBtn"]').forEach(b=>b.addEventListener('click',toggleTheme));
+initTheme();
+
+// ═══════════ NAV ═══════════
+document.querySelectorAll('.nav-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+        document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+        document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+        tab.classList.add('active');document.getElementById(tab.dataset.page).classList.add('active');
+        if(tab.dataset.page==='pageNotes')renderNotes();
+    });
+});
+
+// ═══════════ TOAST ═══════════
+let toastTimer;function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);}
+
+// Init notes count
+renderNotes();
+</script>
+</body>
+  </html>
